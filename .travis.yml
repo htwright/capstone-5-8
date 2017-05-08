@@ -2,7 +2,8 @@ language: node_js
 node_js: node
 deploy:
   provider: heroku
-  api_key: 3a5013dd9bad4cdda7207438c14a8192
-  app: https://safe-earth-98661.herokuapp.com/
-  on: 
+  api_key:
+    secure: MPsVU08s/5LdvXWr6CiFTcm4FtnIuueuKth/SREx+epOo0F6jAyDWlDYPL2gfrDVfTdwSBZokFbUGbu3nQ+OClWCTxW72ALSV8GQMihfBAS4eDmcpA5iI5cTggqB7JLX0GRu7G+Fbs9JWBChoSEmfjPsddCelIIdJmRcI0iBhURHgJ+gxMtZuIyBAzhROv8Ub092gZqhmc3gZQl1/y3jTLH6nxmGDmFJckLI/xPemXk/q+lUI92Yt/qsKeviufcmBOuvNb3H4bGpWxgxK6LBPMCB0BnP6+T5aFcPdDHkRpGRxN6O/soTcFepaDF/HKOYZilDSZBvf3vuC+hLQmhRnvGaYStJ6DXrILXJSXgkVmlLYmkPSiHgQY/fePV51QSKwTavBbapHxonpUiaPcz0s9Yqc8TuqIXymx6IWDqiyrpUOTZZORA0ahaDvybFgTNAbtJTYOdRPBxPEmKGKrPXF6LJVtWjOIGAiuZXoo2a5B4/j+SSZfvnk4VTXGExBcvd8eJxl8BTF6JNGI2C3cEeXpQRu0sBE2I1LhQAx+rq6t33w1bgnASlGofnGQ8EPMEdfibNnRCvxAYW1XK0KNKSkEd6FTy8rbiYMiTAeQZYVACmnVfqVvAAj5sXrwLKgU9ZHIaQjvmqqUV4ceqlTBLx4ZJ+Ws8MiRTQWxr7rA1w38o=
+  app: capstone-5-8
+  on:
     repo: htwright/capstone-5-8
