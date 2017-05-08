@@ -4,6 +4,6 @@ deploy:
   provider: heroku
   api_key:
     secure: NdbnLS+kr1Fs5uAeNSn3aPpP1KNVS2C1vyg0eoyzCCJTUNVkfC2mCDmG94+zjFb0TyQZPnOESNlZB7p+D/B9JoZ94/qtCTTQsQoLP12yLaevQr/8YRQD7uIvoRRsKnrVkn5JR1yNmhHDmqIxK7HRXVMmNYouPMQT9Wo3h/IjDV99t1c0DPDT+0izHhpP476ZMt+rcclljnacBo83/TT1ooACqXm5to7YEcVcgEfj2EStV+2zWdimzYQhxhPPxEIiaKnyiCtUxWpyfqbDJvyB2fWSG8jqiTVoN+GxS1KZyRwkKJaiPTxqNtQrDqV3qzecRWfZLpvvrXyTBHfob9TyOQUCpXIpijmNEQQCT26VxvgDsATuwVOG3Pnc7pYlw/4dn2yKfwf4iGvHkIl/1pi85rORvcXX3xKHYmHyfw5ndMIuiGjuavITS6sGMXdTCfg+45QhpV8bmHNXWOsfRqrzf/OfKPPPby9SIOAI4+CXxIDUICCbSX2jJc0wW4O2BUoSK85JBvaxVmosN97aDHIPeMqPGIqh2Z0j7U/q2xTkulw+PePhaSiAruUIX9WYhcyMoGZDLwaZkVzltTBn3zAdrQZdu47ZFg1ffgxvhbGE/cF7Ip3Bxi1ZUt0KBrAbOXXsO+ph4ZAJBxTwy0b/px+wEZIuqlMRt9BzO2jCau5ju3c=
-  app: https://safe-earth-98661.herokuapp.com/
+  app: safe-earth-98661
   on:
     repo: htwright/capstone-5-8
