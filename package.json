@@ -1,0 +1,22 @@
+{
+  "name": "capstone",
+  "version": "1.0.0",
+  "description": "thinkful 5-8 capstone",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/htwright/capstone-5-8.git"
+  },
+  "author": "Donald, Harrison",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/htwright/capstone-5-8/issues"
+  },
+  "homepage": "https://github.com/htwright/capstone-5-8#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
