@@ -7,13 +7,14 @@ const path = require('path');
 const {DATABASE_URL, PORT} = require('./config');
 const{Item} = require('./models');
 mongoose.Promise = global.Promise;
+//try to remove ^^^
 
 // app.use(express.static('public'));
 app.use(bodyParser.json());
 
 
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname + '/public/index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 
@@ -27,22 +28,25 @@ app.get('/items', (req, res) =>{
       }
       let mapped1 = JSON.stringify(mapped, null, 2);
       return res.send(mapped1);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error: 'Something went wrong!!!'});
     });
 });
 
-
-app.post('/items', (req, res) =>{
-  const requiredFields = ['title', 'content', 'subject'];
-  for (let i=0; i<requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
+function requiredFields(res, reqBody, fields) {
+  fields.forEach(field => {
+    if (!(field in reqBody)) {
       const message = `Missing \`${field}\` in request body`;
       console.error(message);
-      throw new Error(message);
-        // return res.status(400).send(message);
-    }
-  }
+      throw new Error(res.status(400).send(message));
+    }});
+}
 
+app.post('/items', (req, res) =>{
+  requiredFields(res, req.body, ['subject', 'title', 'content']);
+  
   Item
     .create({
       author: req.body.author,
@@ -56,7 +60,10 @@ app.post('/items', (req, res) =>{
     })
     //provide update links
     //provide feedback on input
-    .catch(err => console.error(err));
+    .catch(err => {
+      console.log(err);
+      res.status(500).json({error: 'Something went wrong!!!'});
+    });
 });
 
 app.put('/items/:id', (req,res) => {
@@ -73,14 +80,14 @@ app.put('/items/:id', (req,res) => {
       updatedItem[field] = req.body[field];
     }
   });
-
   Item
   .findByIdAndUpdate(req.params.id, {$set: updatedItem}, {new: true})
   .then(result => {
     res.status(201).json(result.apiRepr());
   })
-  .catch(() => {
-    res.status(500).json({message: 'Something went wrong!!!'});
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({error: 'Something went wrong!!!'});
   });
 });
 
@@ -95,8 +102,7 @@ app.delete('/items/:id', (req,res) => {
       res.status(500).json({error: 'Something went wrong!!!'});
     });
 });
-//thinkful
-//post.ly
+
 app.use('*', function(req, res) {
   res.status(404).json({message: 'Not Found'});
 });
