@@ -3,11 +3,11 @@ mongoose.Promise = global.Promise;
 
 
 const itemSchema = mongoose.Schema({
-    author: {type: String},
-    subject: {type: String, required: true},
-    title: {type: String, required: true},
-    content: {type: String, required: true},
-    credentials: {type: String}
+  author: {type: String},
+  subject: {type: String, required: true},
+  title: {type: String, required: true},
+  content: {type: String, required: true},
+  credentials: {type: String}
 });
 
 itemSchema.methods.apiRepr = function() {
