@@ -2,7 +2,7 @@ language: node_js
 node_js: node
 deploy:
   provider: heroku
-  api_key: 3a5013dd-9bad-4cdd-a720-7438c14a8192
+  api_key: 3a5013dd9bad4cdda7207438c14a8192
   app: https://safe-earth-98661.herokuapp.com/
   on: 
     repo: htwright/capstone-5-8
