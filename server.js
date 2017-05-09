@@ -10,7 +10,7 @@ const{Item} = require('./models');
 mongoose.Promise = global.Promise;
 //try to remove ^^^
 
-// app.use(express.static('public'));
+app.use(express.static('js'));
 app.use(bodyParser.json());
 
 
