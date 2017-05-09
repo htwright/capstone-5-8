@@ -12,6 +12,7 @@ const itemSchema = mongoose.Schema({
 
 itemSchema.methods.apiRepr = function() {
   return {
+    id: this._id,
     author: this.author,
     subject: this.subject,
     title: this.title,

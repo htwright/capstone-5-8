@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
 const {DATABASE_URL, PORT} = require('./config');
@@ -18,21 +19,23 @@ app.get('/', function(req, res) {
 });
 
 
-app.get('/items', (req, res) =>{
+app.get('/items', (req, res) => {
   Item
     .find()
     .then(items =>{
-      let mapped = [];
-      for(let i = 0; i < items.length; i++){
-        mapped[i] = items[i].apiRepr();
-      }
-      let mapped1 = JSON.stringify(mapped, null, 2);
-      return res.send(mapped1);
+      return res.json(items.map(item => item.apiRepr()));
     })
     .catch(err => {
       console.log(err);
       res.status(500).json({error: 'Something went wrong!!!'});
     });
+});
+
+app.get('/items/:id', (req, res) => {
+  Item
+    .findById(req.params.id)
+    .then(result => res.json(result.apiRepr()))
+    .catch(err => res.status(500).send('Oh christ'));
 });
 
 function requiredFields(res, reqBody, fields) {
