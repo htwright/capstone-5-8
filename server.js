@@ -39,14 +39,21 @@ app.get('/items/:id', (req, res) => {
 });
 
 function requiredFields(res, reqBody, fields) {
+  let isValid = true;
   fields.forEach(field => {
     if (!(field in reqBody)) {
-      res.status(400).json({error: `Missing "${field}" in request body`}).end();
+    //   res.status(400).json({error: `Missing "${field}" in request body`}).end();
+      isValid = false;
     }});
+  return isValid;
 }
 
 app.post('/items', (req, res) =>{
-  requiredFields(res, req.body, ['subject', 'title', 'content']);
+  let isValid = requiredFields(res, req.body, ['subject', 'title', 'content']);
+  if (!(isValid)){
+    res.status(400).json({error: `Missing a required field in request body`});
+    return;
+  }
   //check if its true or false
   //if true go into call, if not stop
   Item
