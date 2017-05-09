@@ -32,7 +32,7 @@ function dropData(){
 
 
 
-describe('PassionPlay.ru', function() {
+describe('Share Your Knowledge', function() {
 
 
   before(function() {
@@ -56,7 +56,7 @@ describe('PassionPlay.ru', function() {
 
 
 
-  describe.only('GET endpoints', function(){
+  describe('GET endpoints', function(){
 
     it('should return all items in the database', function(){
       let res;
@@ -116,6 +116,67 @@ describe('PassionPlay.ru', function() {
     });
   });
 
+  describe('Post endpoint', function(){
+    it('should add a new item', function(){
+      const newItem = {
+        subject: 'Gaming',
+        title: 'Hearthstone',
+        content: 'GetGud'
+      };
+
+      return chai.request(app)
+      .post('/items')
+      .send(newItem)
+      .then(result => {
+        result.should.have.status(201);
+        result.should.be.json;
+        result.should.be.a('object');
+        result.body.should.include.keys('id','subject','title','content');
+        result.body.id.should.not.be.null;
+
+        return Item.findById(result.body.id);
+      })
+      .then(item => {
+        item.subject.should.equal(newItem.subject);
+        item.title.should.equal(newItem.title);
+        item.content.should.equal(newItem.content);
+      });
+    });
+  });
+
+  describe('Put endpoint', function(){
+    it('should update and return them item who\'s ID was passed in through params', function(){
+      let updatedItem = {
+        title: 'Cooking'
+      };
+      let dbItem;
+      return Item
+      .findOne()
+      .then(result => {
+        dbItem = result;
+        updatedItem.id = result.id;
+        return chai.request(app)
+        .put(`/items/${result.id}`)
+        .send(updatedItem);
+      })
+      .then(result => {
+        result.body.id.should.equal(dbItem.id);
+        result.body.subject.should.equal(dbItem.subject);
+        result.body.title.should.equal(updatedItem.title);
+        result.body.content.should.equal(dbItem.content);
+        return Item.findById(updatedItem.id);
+      })
+      .then(item => {
+        item.id.should.equal(dbItem.id);
+        item.subject.should.equal(dbItem.subject);
+        item.title.should.equal(updatedItem.title);
+        item.content.should.equal(dbItem.content);
+
+      });
+    });
+  });
+
+
 
 
   describe('Home page should load', () =>{
@@ -129,4 +190,4 @@ describe('PassionPlay.ru', function() {
           });
     });
   });
-});
+});//--- End of Parent describe

@@ -35,27 +35,24 @@ app.get('/items/:id', (req, res) => {
   Item
     .findById(req.params.id)
     .then(result => res.json(result.apiRepr()))
-    .catch(err => res.status(500).send('Oh christ'));
+    .catch(err => res.status(500).send('Something went wrong!!!'));
 });
 
-function requiredFields(res, reqBody, fields) {
-  let isValid = true;
-  fields.forEach(field => {
-    if (!(field in reqBody)) {
-    //   res.status(400).json({error: `Missing "${field}" in request body`}).end();
-      isValid = false;
-    }});
-  return isValid;
-}
-
 app.post('/items', (req, res) =>{
-  let isValid = requiredFields(res, req.body, ['subject', 'title', 'content']);
+  let requiredFields = ['subject', 'title', 'content'];
+  let isValid = true;
+  let missingField = [];
+  requiredFields.forEach(field => {
+    if (!(field in req.body)) {
+      isValid = false;
+      missingField.push(field);
+    }});
+  
   if (!(isValid)){
-    res.status(400).json({error: `Missing a required field in request body`});
+    res.status(400).json({error: `Missing ${missingField} field in request body`});
     return;
   }
-  //check if its true or false
-  //if true go into call, if not stop
+  
   Item
     .create({
       author: req.body.author,
@@ -64,11 +61,9 @@ app.post('/items', (req, res) =>{
       content: req.body.content,
       credentials: req.body.credentials
     })
-    .then(() => {
-      res.status(201).send('Item sucessfully created!');
+    .then(result => {
+      res.status(201).json(result.apiRepr());
     })
-    //provide update links
-    //provide feedback on input
     .catch(err => {
       console.log(err);
       res.status(500).json({error: 'Something went wrong!!!'});
@@ -80,10 +75,11 @@ app.put('/items/:id', (req,res) => {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
     });
+    return;
   }
 
   const updatedItem = {};
-  const updateableFields = ['subject', 'title','content'];
+  const updateableFields = ['subject', 'title','content', 'credentials'];
   updateableFields.forEach(field => {
     if(field in req.body) {
       updatedItem[field] = req.body[field];
