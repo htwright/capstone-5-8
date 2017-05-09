@@ -55,8 +55,8 @@ app.post('/items', (req, res) =>{
     }});
   
   if (!(isValid)){
-    res.status(400).json({error: `Missing ${missingField} field in request body`});
-    return;
+    return res.status(400).json({error: `Missing ${missingField} field in request body`});
+    // return;
   }
   
   Item

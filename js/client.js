@@ -1,7 +1,8 @@
 let url = 'http://localhost:8080/items';
-let html = '';
+
 
 function getAll(){
+  let html = '';
   fetch(url)
     .then(response => {
       return response.json();
