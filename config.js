@@ -7,4 +7,4 @@ exports.DATABASE_URL = process.env.DATABASE_URL ||
 // );
 exports.PORT = process.env.PORT || 8080;
 exports.TEST_DATABASE_URL = process.env.TEST_DATABASE_URL ||
-'mongodb://localhost:27017/test';
+'mongodb://foo:bar@ds129031.mlab.com:29031/test1';
