@@ -7,25 +7,17 @@ function getAll(){
       return response.json();
     })
     .then(response =>{
-      return response.map(function(item){
+      response.forEach(function(item){
         console.log(item);
         html += `<p>Title :${item.title}</p>`;
-      })
-      .then((param) => {
-        $('.containerJS').html(param);
-        return;
       });
-    // .end();
+      return html;
    
-  });
+    }).then(html =>{
+      $('.containerJS').html(html);
+    });
 }
   
-$(function(){
-
-
-
+$(document).ready(function(){
   getAll();
-  $('.containerJS').html('<p>hello</p>');
-  $('.containerJS').html(html);
-
 });
