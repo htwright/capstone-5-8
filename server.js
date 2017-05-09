@@ -38,15 +38,14 @@ app.get('/items', (req, res) =>{
 function requiredFields(res, reqBody, fields) {
   fields.forEach(field => {
     if (!(field in reqBody)) {
-      const message = `Missing \`${field}\` in request body`;
-      console.error(message);
-      throw new Error(res.status(400).send(message));
+      res.status(400).json({error: `Missing "${field}" in request body`}).end();
     }});
 }
 
 app.post('/items', (req, res) =>{
   requiredFields(res, req.body, ['subject', 'title', 'content']);
-  
+  //check if its true or false
+  //if true go into call, if not stop
   Item
     .create({
       author: req.body.author,
