@@ -177,7 +177,26 @@ describe('Share Your Knowledge', function() {
   });
 
 
-
+  describe('Delete endpoint', function() {
+    it('should remove the item at the ID passed in', function(){
+      let dbItem;
+      return Item
+      .findOne()
+      .then(result => {
+        dbItem = result;
+        return chai.request(app)
+        .delete(`/items/${dbItem.id}`);
+      })
+      .then((result) => {
+        result.should.have.status(204);
+        return Item
+        .findById(dbItem.id);
+      })
+      .then(result => {
+        should.not.exist(result);
+      });
+    });
+  });
 
   describe('Home page should load', () =>{
     it('should have status 200', ()=>{
@@ -186,7 +205,6 @@ describe('Share Your Knowledge', function() {
           .end((err, res) =>{
             res.should.have.status(200);
             res.should.be.html;
-            done();
           });
     });
   });
