@@ -1,6 +1,6 @@
 // const {URL} = require('./../../config');
 
-let URL = 'http://localhost:8080/items';
+let URL = 'https://safe-earth-98661.herokuapp.com/items';
 
 function getAll(){
   let html = '';
