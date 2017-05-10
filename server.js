@@ -13,9 +13,12 @@ mongoose.Promise = global.Promise;
 app.use(express.static('js'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
+
 app.use(function(req,res,next){
+  res.header('Access-Control-Allow-Origin', req.get('origin'));
   res.header('Access-Control-Allow-Origin','*');
   res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   next();
 });
 
@@ -55,8 +58,8 @@ app.post('/items', (req, res) =>{
     }});
   
   if (!(isValid)){
-    return res.status(400).json({error: `Missing ${missingField} field in request body`});
-    // return;
+    res.status(400).json({error: `Missing ${missingField} field in request body`});
+    return;
   }
   
   Item
@@ -69,6 +72,7 @@ app.post('/items', (req, res) =>{
     })
     .then(result => {
       res.status(201).json(result.apiRepr());
+      //add location
     })
     .catch(err => {
       console.log(err);
