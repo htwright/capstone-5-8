@@ -1,6 +1,7 @@
 // const {URL} = require('./../../config');
 
 let URL = 'https://safe-earth-98661.herokuapp.com/items';
+// let URL = 'http://localhost:8080/items';
 
 function getAll(){
   let html = '';
@@ -11,12 +12,13 @@ function getAll(){
     .then(response =>{
       response.forEach(function(item){
         console.log(item);
-        html += `<li class = item>
-                 <h3 class = subject>${item.subject}</h3>
-                 <p class = author>Author: ${item.author}</p>
-                 <p class = credentials>Credentials: ${item.credentials}</p>
-                 <p class = title>${item.title}</p>
-                 <p class = content>${item.content}</p>
+        html += `<li class = 'item' id = '${item.id}'>
+                 <h3 class = 'subject'>${item.subject}</h3>
+                 <p class = 'author'>Author: ${item.author}</p>
+                 <p class = 'credentials'>Credentials: ${item.credentials}</p>
+                 <p class = 'title'>${item.title}</p>
+                 <p class = 'content'>${item.content}</p>
+                 <button class = "delete-submit" type="button"> Delete </button>
                  </li>`;
       });
       return html;
@@ -32,6 +34,15 @@ function getAll(){
 // });
 
 // let form = new FormData($('#submit-form'));
+// function clearHtml(){
+//   $('#containerJS').empty();
+// }
+function deleteData(id){
+  return fetch(`${URL}/${id}`, {
+    method: 'DELETE'
+  });
+}
+
 function addData(){
   console.log(URL, 'post URL');
   return fetch(URL, {
@@ -59,5 +70,14 @@ $(document).ready(function(){
     event.preventDefault();
     console.log('hello');
     addData();
+    getAll();
+  });
+  $('.containerJS').on('click', '.delete-submit', function(event){
+    // event.preventDefault();
+    console.log('hello');
+    let thisId = $(this).parent('li').attr('id');
+    console.log(thisId);
+    deleteData(thisId);
+    getAll();
   });
 });
