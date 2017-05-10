@@ -32,6 +32,7 @@ function getAll(){
 
 // let form = new FormData($('#submit-form'));
 function addData(){
+  console.log(url);
   fetch(url, {
     method: 'POST',
     headers: {
@@ -46,6 +47,7 @@ function addData(){
       content: $('#content-input').val()
     })
   }).then( (res) => {
+    console.log(res);
     return res.json();
   });
 }
