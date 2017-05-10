@@ -1,9 +1,10 @@
-let url = 'http://localhost:8080/items';
+// const {URL} = require('./../../config');
 
+let URL = 'http://localhost:8080/items';
 
 function getAll(){
   let html = '';
-  fetch(url)
+  fetch(URL)
     .then(response => {
       return response.json();
     })
@@ -32,12 +33,12 @@ function getAll(){
 
 // let form = new FormData($('#submit-form'));
 function addData(){
-  console.log(url, 'post url');
-  return fetch(url, {
+  console.log(URL, 'post URL');
+  return fetch(URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json, */*'
+      'Accept': 'application/json'
     },
     body: JSON.stringify({
       subject: $('#subject-input').val(),
