@@ -45,6 +45,8 @@ function addData(){
       title: $('#title-input').val(),
       content: $('#content-input').val()
     })
+  }).then( (res) => {
+    return res.json();
   });
 }
   
