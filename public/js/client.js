@@ -32,8 +32,8 @@ function getAll(){
 
 // let form = new FormData($('#submit-form'));
 function addData(){
-  console.log(url);
-  fetch(url, {
+  console.log(url, 'post url');
+  return fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ function addData(){
       content: $('#content-input').val()
     })
   }).then( (res) => {
-    console.log(res);
+    console.log(res, 'response');
     return res.json();
   });
 }
