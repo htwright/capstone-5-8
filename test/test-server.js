@@ -33,7 +33,7 @@ function dropData(){
 
 
 
-describe('Share Your Knowledge', function() {
+describe('PassionPlay.ru', function() {
 
 
   before(function() {

@@ -149,7 +149,7 @@ app.post('/items', (req, res) =>{
 });
 
 app.put('/items/:id', (req,res) => {
-  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+  if (!((req.params.id) && (req.body.id) && (req.params.id === req.body.id))) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
     });
@@ -157,7 +157,7 @@ app.put('/items/:id', (req,res) => {
   }
 
   const updatedItem = {};
-  const updateableFields = ['subject', 'title','content', 'credentials'];
+  const updateableFields = ['subject', 'title', 'content', 'credentials'];
   updateableFields.forEach(field => {
     if(field in req.body) {
       updatedItem[field] = req.body[field];
@@ -165,8 +165,9 @@ app.put('/items/:id', (req,res) => {
   });
   Item
   .findByIdAndUpdate(req.params.id, {$set: updatedItem}, {new: true})
-  .then(() => {
-    res.status(201).send();
+  .then((result) => {
+    // console.log(result);
+    res.status(201).json(result.apiRepr());
   })
   .catch(err => {
     console.log(err);

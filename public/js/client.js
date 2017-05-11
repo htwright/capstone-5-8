@@ -86,27 +86,23 @@ function addData(){
   }).then( (res) => {
     console.log(res, 'response');
     return res.json();
-  });
+  })
+  .catch(err => console.error(err));
 }
 
-function updateData(id, body){
+function updateData(id, thisBody){
   let thisURL = `${URL}/${id}`;
-  // fetch(thisURL)
-  // .then(res => res.json())
-  // .then(res => {
-  //   console.log(res);
-  // });
-  fetch(thisURL, {
+  return fetch(thisURL, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    body: body,
+    body: JSON.stringify(thisBody)
   })
-  .then( (res) => {
+  .then((res) => {
     console.log(res, 'response');
-    return;
+    return res.json();
   })
   .catch(err => console.error(err));
 }
@@ -123,30 +119,39 @@ $(document).ready(function(){
   $('.containerJS').on('click', '.edit-submit', function(){
     let thisId = $(this).closest('li').attr('id');
     // let thisItem = getItemById(thisId);
-    let body = JSON.stringify({
+    let updateBody = {
       id: thisId,
       subject: $(this).siblings('.edit-subject').val(),
       author: $(this).siblings('.edit-author').val(),
       credentials: $(this).siblings('.edit-credentials').val(),
       title: $(this).siblings('.edit-title').val(),
       content: $(this).siblings('.edit-content').val()
-    });
-    console.log(body);
+    };
+    // console.log(updateBody);
+    // return Promise.all([updateData(thisId, updateBody), getAll()]);
 
-    return Promise.all([updateData(thisId, body), getAll()]);
-    
-    
-    // return new Promise((resolve, reject) => {
-    //   return updateData(thisId)
-    //   .then(() =>{
-    //     getAll();
-    //     resolve();
-    //   })
-    //   .catch(err => {
-    //     return reject(err);
-    //   }); 
+    // return new Promise((resolve,reject) =>{
+    updateData(thisId, updateBody)
+      .then((upRes) =>{
+        // console.log(res);
+        getAll();
+        // return resolve();
+      })
+      .catch(err =>{
+        console.error(err);
+        // return reject();
+      }); 
     // });
   });
+
+    // return updateData(thisId, updateBody)
+    //   .then(() =>{
+    //     return getAll();
+    //   })
+    //   .catch(err =>{
+    //     console.error(err);
+    //   }); 
+  // });
 
   
   $('#submit-button').on('click', function(){
