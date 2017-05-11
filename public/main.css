@@ -1,11 +1,24 @@
+/*
+semantic-ui css
+https://github.com/Semantic-Org/Semantic-UI-CSS
+saumanahaii [9:43 AM] 
+https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=5&cad=rja
+&uact=8&ved=0ahUKEwidhLTHiejTAhUG8CYKHfogBf0QtwIIRDAE&url=https%3A%2F%2
+Fwww.youtube.com%2Fwatch%3Fv%3DpSKGEob1sQo&usg=AFQjCNGpSrgUociSvqJIKH9c
+oUNZVkVqSA&sig2=3H4B3YzAVLtDE--d2ojhlA 
+*/
+
 * {
     box-sizing: border-box;
 }
+
 .containerJS {
     display:flex;
     flex-wrap:wrap;
     padding-top: 25px;
 }
+
+
 
 li {
     display: flex;
@@ -19,7 +32,6 @@ li {
 
 .delete-submit {
     width: 25%;
-    
 }
 
 .hidden {

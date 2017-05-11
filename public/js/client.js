@@ -9,17 +9,20 @@ function getAll(){
     })
     .then(response =>{
       response.forEach(function(item){
-        item.content = item.content.substr(0, 250)+'...';
+        if (item.content.length > 250){
+          item.content = item.content.substr(0, 250)+`<a class = 'read-more' href = '${URL}/${item.id}'>...</a>`;
+        }
         html += `<li class = 'item' id = '${item.id}'>
-                <div class = main-container>
-                 <h3 class = 'subject'>${item.subject}</h3>
-                 <p class = 'author'>Author: ${item.author}</p>
-                 <p class = 'credentials'>Credentials: ${item.credentials}</p>
-                 <p class = 'title'>${item.title}</p>
-                 </div>
-                 <p class = 'content'>${item.content}</p>
-                 <a class = 'read-more' href = '${URL}/${item.id}'>Read More</a>
-                 <button class = "delete-submit" type="button"> Delete </button>
+                  <div class = main-container>
+                    <h3 class = 'subject'>${item.subject}</h3>
+                    <p class = 'author'>Author: ${item.author}</p>
+                    <p class = 'credentials'>Credentials: ${item.credentials}</p>
+                    <p class = 'title'>${item.title}</p>
+                    <p class = 'content'>${item.content}</p>
+                    <a class = 'read-more' href = '${URL}/${item.id}'>Read More</a>
+                    <button class = "edit-button" type="button"> Edit </button>
+                    <button class = "delete-submit" type="button"> Delete </button>
+                  </div>
                  </li>`;
       });
       return html;
@@ -28,17 +31,14 @@ function getAll(){
     });
 }
 
-
-function deleteData(id){
+function deleteItemById(id){
   return fetch(`${URL}/${id}`, {
     method: 'DELETE',
-   
   });
 }
 
 function getItemById(id){
   let thisURL = `${URL}/${id}`;
-  console.log(thisURL);
   return fetch(thisURL)
   .then((res) => {
     return res.json();
@@ -50,12 +50,14 @@ function hideReadMore(){
   $('.readmoreJS').addClass('hidden');
   $('.hideReadMore').addClass('hidden');
 }
+
 function showReadMore(){
   if ($('.readmoreJS').hasClass('hidden')){
     $('.readmoreJS').removeClass('hidden');
     $('.hideReadMore').removeClass('hidden');
   } else return;
 }
+
 function addData(){
   console.log(URL, 'post URL');
   return fetch(URL, {
@@ -76,13 +78,46 @@ function addData(){
     return res.json();
   });
 }
+// function showEditData(id, obj){
+//   let editTemplate = `<form id='edit-form'>
+//             Subject*<br> <input id='subject-input' default ="${obj.subject}" placeholder="${obj.subject}" type="text" name = 'subject' required><br>
+//             Author*<br> <input id='author-input' default ="${obj.author}"  placeholder="${obj.author}" type="text" name = 'author' required ><br>
+//             Credentials<br> <input id='credentials-input' default ="${obj.credentials}" placeholder="${obj.credentials}" type="text" name = 'credentials'><br>
+//             Title*<br> <input id='title-input' default = "${obj.title}" placeholder="${obj.title}" type="text" name = 'title' required ><br>
+//             Content*<br> <textarea rows='10' cols='100' id='content-input' type="text" name = 'content' placeholder= "${obj.content}" default = "${obj.content}"  require> </textarea><br>
+//             <input id='edit-submit-button' type="button" value="Submit">
+//          </form>
+//   `;
+//   $('.editContainer').empty();
+//   $('.editContainer').append(editTemplate);
+// }
+// function submitEdit(){
+
+// }
   
 $(document).ready(function(){
+  // $('.editContainer').on('click', '#edit-submit-button', function(){
+
+  // });
+
+  // $('.containerJS').on('click', '.edit-button', function(){
+  //   let thisId = $(this).closest('li').attr('id');
+  //   return getItemById(thisId)
+  //     .then(data => {
+  //       console.log(data);
+  //       showEditData(thisId, data);
+  //       return;
+  //     });
+  // });
+
   getAll();
+
+  
   $('#submit-button').on('click', function(){
     // event.preventDefault();
     return new Promise((resolve, reject) => {
-      addData().then(() =>{
+      addData()
+      .then(() =>{
         getAll();
         resolve();
       })
@@ -91,10 +126,13 @@ $(document).ready(function(){
       }); 
     });
   });
+
+
   $('.containerJS').on('click', '.delete-submit', function(){
     let thisId = $(this).closest('li').attr('id');
     return new Promise((resolve, reject) => {
-      deleteData(thisId).then(() =>{
+      deleteItemById(thisId)
+      .then(() =>{
         getAll();
         resolve();
       })
@@ -103,6 +141,8 @@ $(document).ready(function(){
       }); 
     });
   });
+
+
   $('.containerJS').on('click', '.read-more', function(event){
     event.preventDefault();
     
@@ -114,6 +154,8 @@ $(document).ready(function(){
       $('.readmoreJS').append(`<h4>${result.title}</h4><br><p>${result.content}</p>`);
     });
   });
+
+
   $('.hideReadMore').on('click', function(){
     hideReadMore();
   });
