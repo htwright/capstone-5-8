@@ -148,7 +148,7 @@ app.post('/items', (req, res) =>{
     });
 });
 
-app.put('/items/:id', passport.authenticate('basic', {session: false}), (req,res) => {
+app.put('/items/:id', (req,res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
@@ -174,7 +174,7 @@ app.put('/items/:id', passport.authenticate('basic', {session: false}), (req,res
   });
 });
 
-app.delete('/items/:id', passport.authenticate('basic', {session: false}), (req,res) => {
+app.delete('/items/:id', (req,res) => {
   Item
     .findByIdAndRemove(req.params.id)
     .then(() => {
