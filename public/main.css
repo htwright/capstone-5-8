@@ -1,33 +1,87 @@
-/*
-semantic-ui css
-https://github.com/Semantic-Org/Semantic-UI-CSS
-saumanahaii [9:43 AM] 
-https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=5&cad=rja
-&uact=8&ved=0ahUKEwidhLTHiejTAhUG8CYKHfogBf0QtwIIRDAE&url=https%3A%2F%2
-Fwww.youtube.com%2Fwatch%3Fv%3DpSKGEob1sQo&usg=AFQjCNGpSrgUociSvqJIKH9c
-oUNZVkVqSA&sig2=3H4B3YzAVLtDE--d2ojhlA 
-*/
-
 * {
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px; 
 }
 
 .containerJS {
-    display:flex;
+    display:inline-flex;
     flex-wrap:wrap;
+    justify-content:space-around;
     padding-top: 25px;
+
 }
 
 
 
 li {
     display: flex;
-    width: 33.33%;
-    flex-direction:column;
-    border: 2px solid black;
-    margin: 0px;
-    padding: 25px;
-    
+    width: 30%;
+   margin: 25px;
+    padding: 0px;
+}
+
+.header-container {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    display:flex;
+    justify-content: space-between;
+    width: 100%;
+    background: #2b54a1;
+    color: white;
+    padding: 15px;
+}
+
+.title {
+    float: left;
+    font-weight: bold;
+    font-size: 18px;
+    margin:0;
+}
+.subject {
+   margin:0;
+}
+
+.content-container {
+    background-color:#11c691;
+    padding: 15px;
+    color:white;
+
+ }
+ .author {
+     font-weight:bold;
+     margin:0;
+ }
+ .credentials {
+     color:#2b54a1;
+     margin-top:5px;
+ }
+ .short-content,.full-content {
+     line-height:1.75em;
+ }
+.main-container {
+
+    width: 100%;
+     border-radius: 10px;
+}
+
+.controls-container {
+    background-color:#11c691;
+    width:100%;
+    display:flex;
+    padding:15px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.edit-button, .read-more {
+    background:#2b54a1;
+    border:0;
+    border-radius:10px;
+    padding:15px 30px;
+    color:white;
+    margin-left:15px;
+
 }
 
 .delete-submit {
@@ -36,10 +90,6 @@ li {
 
 .hidden {
     display : none;
-}
-
-.title {
-    text-decoration: underline;
 }
 
 textarea {

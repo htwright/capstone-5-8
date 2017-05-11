@@ -10,30 +10,45 @@ function render(){
     res.forEach(function(item){
       let shortContent = item.content;
       if (item.content.length > 250){
-        shortContent = item.content.substr(0, 250)+`<a class = 'read-more' href = '${URL}/${item.id}'>...</a>`;
+        shortContent = item.content.substr(0, 250)+'<span>...</span>';
       }
       html += 
 `<li class = 'item' id = '${item.id}'>
 <div class = 'main-container'>
-  <h3 class = 'subject'>${item.subject}</h3>
-  <p class = 'author'>Author: ${item.author}</p>
-  <p class = 'credentials'>Credentials: ${item.credentials}</p>
-  <p class = 'title'>${item.title}</p>
-  <p class = 'truncated-content'>${shortContent}</p>
-  <p class = 'full-content hidden'>${item.content}</p>
-  <button class = 'read-more'>Read More</button>
-  <button class = 'read-more hidden'>Read Less</button>
-  <button class = "edit-button" type="button"> Edit </button>
+  <div class='header-container'>
+    <p class = 'title'>${item.title}</p>
+    <h3 class = 'subject'>${item.subject}</h3>
+  </div>
+  <div class='content-container'>
+    <p class = 'author'>Author: ${item.author}</p>
+    <p class = 'credentials'>Credentials: ${item.credentials}</p>
+    <p class = 'truncated-content'>${shortContent}</p>
+    <p class = 'full-content hidden'>${item.content}</p>
+  </div>
+  <div class ='controls-container'>
+    <button class = 'read-more'>Read More</button>
+    <button class = 'read-more hidden'>Read Less</button>
+    <button class = "edit-button" type="button"> Edit </button>
+  </div>
 </div>
   
 <form class = 'edit-form hidden'>
-    Subject<br> <textarea rows='1' cols='25' class='edit-subject' type="text" name = 'content'>${item.subject}</textarea><br>
-    Credentials<br> <textarea rows='1' cols='25' class='edit-credentials' type="text" name = 'content'>${item.credentials}</textarea><br>
-    Title<br> <textarea rows='1' cols='25' class='edit-title' type="text" name = 'content'>${item.title}</textarea><br>
+  <label>
+    Title<br> <input class='edit-title' type="text" name = 'content' value = '${item.title}'><br>
+  </label>
+  <label>
+    Subject<br> <input class='edit-subject' type="text" name = 'content' value = '${item.subject}'><br>
+    </label>
+    <label>
+    Credentials<br> <input class='edit-credentials' type="text" name = 'content' value = '${item.credentials}'><br>
+    </label>
+    <label>
     Content<br> <textarea rows='10' cols='80' class='edit-content' type="text" name = 'content'>${item.content}</textarea><br>
-    <input class='edit-submit' type="button" value="Submit">
-    <button class = "edit-cancel" type="button"> Cancel </button>
+    </label>
+    <input class='edit-submit' type="submit" value="Submit">
     <button class = "delete-submit" type="button"> Delete </button>
+  <button class = "edit-cancel" type="button"> Cancel </button>
+
 </form>
 </li>`;
     });
@@ -98,7 +113,7 @@ $(document).ready(function(){
   
   render();
 
-  $('#submit-button').on('click', function(event){
+  $('#submit-form').on('submit', function(event){
     event.preventDefault();
     return postItem()
       .then(() =>{
@@ -128,15 +143,16 @@ $(document).ready(function(){
     $(this).closest('li').find('.edit-form').addClass('hidden');
   });
 
-  $('.containerJS').on('click', '.edit-submit', function(){
+  $('.containerJS').on('submit', '.edit-form', function(event){
+    event.preventDefault();
     let thisId = $(this).closest('li').attr('id');
     let updateBody = {
       id: thisId,
-      subject: $(this).siblings('.edit-subject').val(),
-      author: $(this).siblings('.edit-author').val(),
-      credentials: $(this).siblings('.edit-credentials').val(),
-      title: $(this).siblings('.edit-title').val(),
-      content: $(this).siblings('.edit-content').val()
+      subject: $(this).find('.edit-subject').val(),
+      author: $(this).find('.edit-author').val(),
+      credentials: $(this).find('.edit-credentials').val(),
+      title: $(this).find('.edit-title').val(),
+      content: $(this).find('.edit-content').val()
     };
    
     updateItemById(thisId, updateBody)
