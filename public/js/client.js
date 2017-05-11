@@ -126,7 +126,8 @@ $(document).ready(function(){
       }); 
   });
 
-  $('#submit-button').on('click', function(){
+  $('#submit-button').on('click', function(event){
+    event.preventDefault();
     return new Promise((resolve, reject) => {
       addData()
       .then(() =>{
