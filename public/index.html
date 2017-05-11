@@ -9,8 +9,12 @@
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
-        <h1>Share Your Knowledge</h1>
 
+        <h1>Share Your Knowledge</h1>
+        <button class = "hideReadMore hidden" type="button">Hide</button>
+
+        <div class = "readmoreJS hidden">
+        </div>
         <form id='submit-form'>
             Subject*<br> <input id='subject-input' type="text" name = 'subject' required><br>
             Author*<br> <input id='author-input' type="text" name = 'author' required ><br>
@@ -18,14 +22,14 @@
             Title*<br> <input id='title-input' type="text" name = 'title' required ><br>
             Content*<br> <textarea rows='10' cols='100' id='content-input' type="text" name = 'content' require> </textarea><br>
             <input id='submit-button' type="button" value="Submit">
-        </form>
+         </form>
         
 
-        <div class= "containerJS">
-            <ul>
+         <div class= "containerJS">
+             <ul>
                 
-            </ul>
-        </div>
+             </ul>
+         </div>
 
 
 

@@ -9,7 +9,7 @@ function getAll(){
     })
     .then(response =>{
       response.forEach(function(item){
-        console.log(item);
+        item.content = item.content.substr(0, 250)+'...';
         html += `<li class = 'item' id = '${item.id}'>
                 <div class = main-container>
                  <h3 class = 'subject'>${item.subject}</h3>
@@ -18,6 +18,7 @@ function getAll(){
                  <p class = 'title'>${item.title}</p>
                  </div>
                  <p class = 'content'>${item.content}</p>
+                 <a class = 'read-more' href = '${URL}/${item.id}'>Read More</a>
                  <button class = "delete-submit" type="button"> Delete </button>
                  </li>`;
       });
@@ -35,6 +36,26 @@ function deleteData(id){
   });
 }
 
+function getItemById(id){
+  let thisURL = `${URL}/${id}`;
+  console.log(thisURL);
+  return fetch(thisURL)
+  .then((res) => {
+    return res.json();
+  })
+  .catch(err => console.error(err));
+}
+
+function hideReadMore(){
+  $('.readmoreJS').addClass('hidden');
+  $('.hideReadMore').addClass('hidden');
+}
+function showReadMore(){
+  if ($('.readmoreJS').hasClass('hidden')){
+    $('.readmoreJS').removeClass('hidden');
+    $('.hideReadMore').removeClass('hidden');
+  } else return;
+}
 function addData(){
   console.log(URL, 'post URL');
   return fetch(URL, {
@@ -81,6 +102,20 @@ $(document).ready(function(){
         return reject(err);
       }); 
     });
+  });
+  $('.containerJS').on('click', '.read-more', function(event){
+    event.preventDefault();
+    
+    let thisId = $(this).closest('li').attr('id');
+    return getItemById(thisId)
+    .then(result => {
+      $('.readmoreJS').empty();
+      showReadMore();
+      $('.readmoreJS').append(`<h4>${result.title}</h4><br><p>${result.content}</p>`);
+    });
+  });
+  $('.hideReadMore').on('click', function(){
+    hideReadMore();
   });
 });
 
