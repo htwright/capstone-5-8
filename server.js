@@ -60,7 +60,7 @@ app.post('/users', (req, res) => {
 
   let {username, password} = req.body;
 
-  username = username.trim();
+  username = username.toLowerCase().trim();
   password = password.trim();
 
   // check for existing user
@@ -115,8 +115,8 @@ app.get('/items/:id', (req, res) => {
     .catch(err => res.status(500).send('Something went wrong!!!'));
 });
 
-app.post('/items', passport.authenticate('basic', {session: false}), (req, res) =>{
-  let requiredFields = ['subject', 'title', 'content'];
+app.post('/items', (req, res) =>{
+  let requiredFields = ['subject', 'title', 'content', 'author'];
   let isValid = true;
   let missingField = [];
   requiredFields.forEach(field => {

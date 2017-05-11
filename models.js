@@ -44,8 +44,8 @@ UserSchema.methods.apiRepr = function() {
 
 UserSchema.methods.validatePassword = function(password) {
   return bcrypt
-    .compare(password, this.password)
-    .then(isValid => isValid);
+    .compare(password, this.password);
+    
 };
 
 UserSchema.statics.hashPassword = function(password) {

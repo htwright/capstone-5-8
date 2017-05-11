@@ -11,10 +11,12 @@ function getAll(){
       response.forEach(function(item){
         console.log(item);
         html += `<li class = 'item' id = '${item.id}'>
+                <div class = main-container>
                  <h3 class = 'subject'>${item.subject}</h3>
                  <p class = 'author'>Author: ${item.author}</p>
                  <p class = 'credentials'>Credentials: ${item.credentials}</p>
                  <p class = 'title'>${item.title}</p>
+                 </div>
                  <p class = 'content'>${item.content}</p>
                  <button class = "delete-submit" type="button"> Delete </button>
                  </li>`;
@@ -28,7 +30,8 @@ function getAll(){
 
 function deleteData(id){
   return fetch(`${URL}/${id}`, {
-    method: 'DELETE'
+    method: 'DELETE',
+   
   });
 }
 
