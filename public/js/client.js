@@ -19,20 +19,21 @@ function getAll(){
                     <p class = 'author'>Author: ${item.author}</p>
                     <p class = 'credentials'>Credentials: ${item.credentials}</p>
                     <p class = 'title'>${item.title}</p>
-                    <p class = 'content'>${shortContent}</p>
-                    <a class = 'read-more' href = '${URL}/${item.id}'>Read More</a>
+                    <p class = 'short-content'>${shortContent}</p>
+                    <p class = 'full-content hidden'>${item.content}</p>
+                    <button class = 'read-more'>Read More</button>
+                    <button class = 'read-more hidden'>Read Less</button>
                     <button class = "edit-button" type="button"> Edit </button>
                   </div>
                     
                   <form class = 'edit-form hidden'>
                      Subject<br> <textarea rows='1' cols='25' class='edit-subject' type="text" name = 'content'>${item.subject}</textarea><br>
-                      Credentials<br> <textarea rows='1' cols='25' class='edit-credentials' type="text" name = 'content'>${item.credentials}</textarea><br>
-                      Title<br> <textarea rows='1' cols='25' class='edit-title' type="text" name = 'content'>${item.title}</textarea><br>
-                      Content<br> <textarea rows='10' cols='80' class='edit-content' type="text" name = 'content'>${item.content}</textarea><br>
-                      <input class='edit-submit' type="button" value="Submit">
-                      <button class = "delete-submit" type="button"> Delete </button>
+                     Credentials<br> <textarea rows='1' cols='25' class='edit-credentials' type="text" name = 'content'>${item.credentials}</textarea><br>
+                     Title<br> <textarea rows='1' cols='25' class='edit-title' type="text" name = 'content'>${item.title}</textarea><br>
+                     Content<br> <textarea rows='10' cols='80' class='edit-content' type="text" name = 'content'>${item.content}</textarea><br>
+                     <input class='edit-submit' type="button" value="Submit">
+                     <button class = "delete-submit" type="button"> Delete </button>
                   </form>
-                  
                  </li>`;
       });
       return html;
@@ -47,26 +48,14 @@ function deleteItemById(id){
   });
 }
 
-function getItemById(id){
-  let thisURL = `${URL}/${id}`;
-  return fetch(thisURL)
-  .then((res) => {
-    return res.json();
-  })
-  .catch(err => console.error(err));
-}
-
-function hideReadMore(){
-  $('.readmoreJS').addClass('hidden');
-  $('.hideReadMore').addClass('hidden');
-}
-
-function showReadMore(){
-  if ($('.readmoreJS').hasClass('hidden')){
-    $('.readmoreJS').removeClass('hidden');
-    $('.hideReadMore').removeClass('hidden');
-  } else return;
-}
+// function getItemById(id){
+//   let thisURL = `${URL}/${id}`;
+//   return fetch(thisURL)
+//   .then((res) => {
+//     return res.json();
+//   })
+//   .catch(err => console.error(err));
+// }
 
 function addData(){
   console.log(URL, 'post URL');
@@ -118,7 +107,7 @@ $(document).ready(function(){
 
   $('.containerJS').on('click', '.edit-submit', function(){
     let thisId = $(this).closest('li').attr('id');
-    // let thisItem = getItemById(thisId);
+    
     let updateBody = {
       id: thisId,
       subject: $(this).siblings('.edit-subject').val(),
@@ -127,35 +116,17 @@ $(document).ready(function(){
       title: $(this).siblings('.edit-title').val(),
       content: $(this).siblings('.edit-content').val()
     };
-    // console.log(updateBody);
-    // return Promise.all([updateData(thisId, updateBody), getAll()]);
-
-    // return new Promise((resolve,reject) =>{
+   
     updateData(thisId, updateBody)
       .then((upRes) =>{
-        // console.log(res);
         getAll();
-        // return resolve();
       })
       .catch(err =>{
         console.error(err);
-        // return reject();
       }); 
-    // });
   });
 
-    // return updateData(thisId, updateBody)
-    //   .then(() =>{
-    //     return getAll();
-    //   })
-    //   .catch(err =>{
-    //     console.error(err);
-    //   }); 
-  // });
-
-  
   $('#submit-button').on('click', function(){
-    // event.preventDefault();
     return new Promise((resolve, reject) => {
       addData()
       .then(() =>{
@@ -167,7 +138,6 @@ $(document).ready(function(){
       }); 
     });
   });
-
 
   $('.containerJS').on('click', '.delete-submit', function(){
     let thisId = $(this).closest('li').attr('id');
@@ -186,23 +156,11 @@ $(document).ready(function(){
 
   $('.containerJS').on('click', '.read-more', function(event){
     event.preventDefault();
-    
-    let thisId = $(this).closest('li').attr('id');
-    return getItemById(thisId)
-    .then(result => {
-      $('.readmoreJS').empty();
-      showReadMore();
-      $('.readmoreJS').append(`<h4>${result.title}</h4><br><p>${result.content}</p>`);
-    });
+    $(this).closest('li').find('.full-content').toggleClass('hidden');
+    $(this).closest('li').find('.short-content').toggleClass('hidden');
+    $(this).closest('li').find('.read-more').toggleClass('hidden');
   });
 
-
-  $('.hideReadMore').on('click', function(){
-    hideReadMore();
-  });
 });
 
 
-//passport bearer strat
-//oAth
-//post /login endpoint
