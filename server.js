@@ -10,7 +10,7 @@ const{Item, User} = require('./models');
 const cors = require('cors');
 // const passport = require('passport');
 // const {BasicStrategy} = require('passport-http');
-mongoose.Promise = global.Promise;
+// mongoose.Promise = global.Promise;
 //try to remove ^^^
 
 app.use(express.static('js'));

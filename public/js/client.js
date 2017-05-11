@@ -116,18 +116,14 @@ $(document).ready(function(){
   $('#submit-form').on('submit', function(event){
     event.preventDefault();
     return postItem()
-      .then(() =>{
-        render();
-      })
+      .then(render)
       .catch(err => console.error(err));
   });
 
   $('.containerJS').on('click', '.delete-submit', function(){
     let thisId = $(this).closest('li').attr('id');
     return deleteItemById(thisId)
-      .then(() =>{
-        render();
-      })
+      .then(render)
       .catch(err => {
         console.error(err);
       }); 
@@ -154,14 +150,19 @@ $(document).ready(function(){
       title: $(this).find('.edit-title').val(),
       content: $(this).find('.edit-content').val()
     };
-   
     updateItemById(thisId, updateBody)
-      .then(() =>{
-        render();
-      })
+      .then(render)
       .catch(err =>{
         console.error(err);
       }); 
+
+    // updateItemById(thisId, updateBody)
+    //   .then(() =>{
+    //     render();
+    //   })
+    //   .catch(err =>{
+    //     console.error(err);
+    //   }); 
   });
 
   $('.containerJS').on('click', '.read-more', function(event){
