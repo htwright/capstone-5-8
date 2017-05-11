@@ -1,5 +1,5 @@
-// let URL = 'https://safe-earth-98661.herokuapp.com/items';
-let URL = 'http://localhost:8080/items';
+let URL = 'https://safe-earth-98661.herokuapp.com/items';
+// let URL = 'http://localhost:8080/items';
 
 function getAll(){
   let html = '';
