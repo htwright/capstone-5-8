@@ -61,15 +61,23 @@ $(document).ready(function(){
   $('#submit-button').on('click', function(event){
     // event.preventDefault();
     console.log('hello');
-    addData();
-    getAll();
+    return new Promise((resolve, reject) => {
+      addData().then(() =>{
+        getAll();
+        resolve();
+      });
+    });
   });
   $('.containerJS').on('click', '.delete-submit', function(event){
     console.log('hello');
     let thisId = $(this).closest('li').attr('id');
     console.log(thisId);
-    deleteData(thisId);
-    getAll();
+    return new Promise((resolve, reject) => {
+      deleteData(thisId).then(() =>{
+        getAll();
+        resolve();
+      });
+    });
   });
 });
 
