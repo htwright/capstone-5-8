@@ -26,7 +26,6 @@ function getAll(){
                     
                   <form class = 'edit-form hidden'>
                      Subject<br> <textarea rows='1' cols='25' class='edit-subject' type="text" name = 'content'>${item.subject}</textarea><br>
-                      Author<br> <textarea rows='1' cols='25' class='edit-author' type="text" name = 'content'>${item.author}</textarea><br>
                       Credentials<br> <textarea rows='1' cols='25' class='edit-credentials' type="text" name = 'content'>${item.credentials}</textarea><br>
                       Title<br> <textarea rows='1' cols='25' class='edit-title' type="text" name = 'content'>${item.title}</textarea><br>
                       Content<br> <textarea rows='10' cols='80' class='edit-content' type="text" name = 'content'>${item.content}</textarea><br>
@@ -90,27 +89,26 @@ function addData(){
   });
 }
 
-function updateData(id){
+function updateData(id, body){
   let thisURL = `${URL}/${id}`;
+  // fetch(thisURL)
+  // .then(res => res.json())
+  // .then(res => {
+  //   console.log(res);
+  // });
   fetch(thisURL, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     },
-    body: JSON.stringify({
-      id: id,
-      subject: $('.subject-input').val(),
-      author: $('.author-input').val(),
-      credentials: $('.credentials-input').val(),
-      title: $('.title-input').val(),
-      content: $('.content-input').val()
-    })
+    body: body,
   })
   .then( (res) => {
     console.log(res, 'response');
     return;
-  });
+  })
+  .catch(err => console.error(err));
 }
   
 $(document).ready(function(){
@@ -124,16 +122,30 @@ $(document).ready(function(){
 
   $('.containerJS').on('click', '.edit-submit', function(){
     let thisId = $(this).closest('li').attr('id');
-    return new Promise((resolve, reject) => {
-      return updateData(thisId)
-      .then(() =>{
-        getAll();
-        resolve();
-      })
-      .catch(err => {
-        return reject(err);
-      }); 
+    // let thisItem = getItemById(thisId);
+    let body = JSON.stringify({
+      id: thisId,
+      subject: $(this).siblings('.edit-subject').val(),
+      author: $(this).siblings('.edit-author').val(),
+      credentials: $(this).siblings('.edit-credentials').val(),
+      title: $(this).siblings('.edit-title').val(),
+      content: $(this).siblings('.edit-content').val()
     });
+    console.log(body);
+
+    return Promise.all([updateData(thisId, body), getAll()]);
+    
+    
+    // return new Promise((resolve, reject) => {
+    //   return updateData(thisId)
+    //   .then(() =>{
+    //     getAll();
+    //     resolve();
+    //   })
+    //   .catch(err => {
+    //     return reject(err);
+    //   }); 
+    // });
   });
 
   

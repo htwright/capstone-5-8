@@ -162,10 +162,7 @@ describe('Share Your Knowledge', function() {
         .send(updatedItem);
       })
       .then(result => {
-        result.body.id.should.equal(dbItem.id);
-        result.body.subject.should.equal(dbItem.subject);
-        result.body.title.should.equal(updatedItem.title);
-        result.body.content.should.equal(dbItem.content);
+        result.should.have.status(201);
         return Item.findById(updatedItem.id);
       })
       .then(item => {
@@ -173,7 +170,6 @@ describe('Share Your Knowledge', function() {
         item.subject.should.equal(dbItem.subject);
         item.title.should.equal(updatedItem.title);
         item.content.should.equal(dbItem.content);
-
       });
     });
   });
