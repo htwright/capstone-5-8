@@ -8,8 +8,8 @@ const path = require('path');
 const {DATABASE_URL, PORT} = require('./config');
 const{Item, User} = require('./models');
 const cors = require('cors');
-const passport = require('passport');
-const {BasicStrategy} = require('passport-http');
+// const passport = require('passport');
+// const {BasicStrategy} = require('passport-http');
 mongoose.Promise = global.Promise;
 //try to remove ^^^
 
@@ -24,71 +24,71 @@ app.use(function(req, res, next) {
   next();
 });
 
-const strategy = new BasicStrategy(function(username, password, callback) {
-  let user;
-  User
-    .findOne({username: username})
-    .exec()
-    .then(_user => {
-      user = _user;
-      if (!user) {
-        return callback(null, false, {message: 'Incorrect username'});
-      }
-      return user.validatePassword(password);
-    })
-    .then(isValid => {
-      if (!isValid) {
-        return callback(null, false, {message: 'Incorrect password'});
-      }
-      else {
-        return callback(null, user);
-      }
-    });
-});
+// const strategy = new BasicStrategy(function(username, password, callback) {
+//   let user;
+//   User
+//     .findOne({username: username})
+//     .exec()
+//     .then(_user => {
+//       user = _user;
+//       if (!user) {
+//         return callback(null, false, {message: 'Incorrect username'});
+//       }
+//       return user.validatePassword(password);
+//     })
+//     .then(isValid => {
+//       if (!isValid) {
+//         return callback(null, false, {message: 'Incorrect password'});
+//       }
+//       else {
+//         return callback(null, user);
+//       }
+//     });
+// });
 
-passport.use(strategy);
+// passport.use(strategy);
 
-app.post('/users', (req, res) => {
-  const requiredFields = ['username', 'password'];
+// app.post('/users', (req, res) => {
+//   const requiredFields = ['username', 'password'];
 
-  const missingIndex = requiredFields.findIndex(field => !req.body[field]);
-  if (missingIndex != -1) {
-    return res.status(400).json({
-      message: `Missing field: ${requiredFields[missingIndex]}`
-    });
-  }
+//   const missingIndex = requiredFields.findIndex(field => !req.body[field]);
+//   if (missingIndex != -1) {
+//     return res.status(400).json({
+//       message: `Missing field: ${requiredFields[missingIndex]}`
+//     });
+//   }
 
-  let {username, password} = req.body;
+  // let {username, password} = req.body;
 
-  username = username.toLowerCase().trim();
-  password = password.trim();
+  // username = username.toLowerCase().trim();
+  // password = password.trim();
 
   // check for existing user
-  return User
-    .find({username})
-    .count()
-    .exec()
-    .then(count => {
-      if (count > 0) {
-        return res.status(422).json({message: 'username already taken'});
-      }
-      // if no existing user, hash password
-      return User.hashPassword(password);
-    })
-    .then(hash => {
-      return User
-        .create({
-          username,
-          password: hash,
-        });
-    })
-    .then(user => {
-      return res.status(201).json(user.apiRepr());
-    })
-    .catch(err => {
-      res.status(500).json({message: 'Internal server error'});
-    });
-});
+//   return User
+//     .find({username})
+//     .count()
+//     .exec()
+//     .then(count => {
+//       if (count > 0) {
+//         return res.status(422).json({message: 'username already taken'});
+//       }
+//       // if no existing user, hash password
+//       return User.hashPassword(password);
+//     })
+//     .then(hash => {
+//       return User
+//         .create({
+//           username,
+//           password: hash,
+//         });
+//     })
+//     .then(user => {
+//       return res.status(201).json(user.apiRepr());
+//     })
+//     .catch(err => {
+//       res.status(500).json({message: 'Internal server error'});
+//     });
+// });
 
 
 app.get('/', function(req, res) {

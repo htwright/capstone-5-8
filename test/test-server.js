@@ -2,7 +2,7 @@ const  {runServer, closeServer, app} = require('../server');
 const chai = require('chai');
 const {Item} = require('../models');
 const chaiHttp = require('chai-http');
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const {TEST_DATABASE_URL} = require('../config');
 const mongoose = require('mongoose');
 const faker = require('faker');
@@ -15,7 +15,8 @@ function seedItemData(){
     seed.push({
       subject: faker.company.companyName(),
       title: faker.lorem.words(),
-      content: faker.lorem.paragraph()
+      content: faker.lorem.paragraph(),
+      author: faker.name.firstName()
     });
   }
   return Item.insertMany(seed);
@@ -121,7 +122,8 @@ describe('Share Your Knowledge', function() {
       const newItem = {
         subject: 'Gaming',
         title: 'Hearthstone',
-        content: 'GetGud'
+        content: 'GetGud',
+        author: 'Donny D'
       };
 
       return chai.request(app)
