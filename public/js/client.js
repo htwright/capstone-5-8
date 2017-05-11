@@ -58,25 +58,28 @@ function addData(){
   
 $(document).ready(function(){
   getAll();
-  $('#submit-button').on('click', function(event){
+  $('#submit-button').on('click', function(){
     // event.preventDefault();
-    console.log('hello');
     return new Promise((resolve, reject) => {
       addData().then(() =>{
         getAll();
         resolve();
-      });
+      })
+      .catch(err => {
+        return reject(err);
+      }); 
     });
   });
-  $('.containerJS').on('click', '.delete-submit', function(event){
-    console.log('hello');
+  $('.containerJS').on('click', '.delete-submit', function(){
     let thisId = $(this).closest('li').attr('id');
-    console.log(thisId);
     return new Promise((resolve, reject) => {
       deleteData(thisId).then(() =>{
         getAll();
         resolve();
-      });
+      })
+      .catch(err => {
+        return reject(err);
+      }); 
     });
   });
 });
