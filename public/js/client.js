@@ -1,5 +1,5 @@
-let URL = 'https://safe-earth-98661.herokuapp.com/items';
-// let URL = 'http://localhost:8080/items';
+// let URL = 'https://safe-earth-98661.herokuapp.com/items';
+let URL = 'http://localhost:8080/items';
 
 function getAll(){
   let html = '';
@@ -9,20 +9,31 @@ function getAll(){
     })
     .then(response =>{
       response.forEach(function(item){
+        let shortContent = item.content;
         if (item.content.length > 250){
-          item.content = item.content.substr(0, 250)+`<a class = 'read-more' href = '${URL}/${item.id}'>...</a>`;
+          shortContent = item.content.substr(0, 250)+`<a class = 'read-more' href = '${URL}/${item.id}'>...</a>`;
         }
         html += `<li class = 'item' id = '${item.id}'>
-                  <div class = main-container>
+                  <div class = 'main-container'>
                     <h3 class = 'subject'>${item.subject}</h3>
                     <p class = 'author'>Author: ${item.author}</p>
                     <p class = 'credentials'>Credentials: ${item.credentials}</p>
                     <p class = 'title'>${item.title}</p>
-                    <p class = 'content'>${item.content}</p>
+                    <p class = 'content'>${shortContent}</p>
                     <a class = 'read-more' href = '${URL}/${item.id}'>Read More</a>
                     <button class = "edit-button" type="button"> Edit </button>
-                    <button class = "delete-submit" type="button"> Delete </button>
                   </div>
+                    
+                  <form class = 'edit-form hidden'>
+                     Subject<br> <textarea rows='1' cols='25' class='edit-subject' type="text" name = 'content'>${item.subject}</textarea><br>
+                      Author<br> <textarea rows='1' cols='25' class='edit-author' type="text" name = 'content'>${item.author}</textarea><br>
+                      Credentials<br> <textarea rows='1' cols='25' class='edit-credentials' type="text" name = 'content'>${item.credentials}</textarea><br>
+                      Title<br> <textarea rows='1' cols='25' class='edit-title' type="text" name = 'content'>${item.title}</textarea><br>
+                      Content<br> <textarea rows='10' cols='80' class='edit-content' type="text" name = 'content'>${item.content}</textarea><br>
+                      <input class='edit-submit' type="button" value="Submit">
+                      <button class = "delete-submit" type="button"> Delete </button>
+                  </form>
+                  
                  </li>`;
       });
       return html;
@@ -78,39 +89,52 @@ function addData(){
     return res.json();
   });
 }
-// function showEditData(id, obj){
-//   let editTemplate = `<form id='edit-form'>
-//             Subject*<br> <input id='subject-input' default ="${obj.subject}" placeholder="${obj.subject}" type="text" name = 'subject' required><br>
-//             Author*<br> <input id='author-input' default ="${obj.author}"  placeholder="${obj.author}" type="text" name = 'author' required ><br>
-//             Credentials<br> <input id='credentials-input' default ="${obj.credentials}" placeholder="${obj.credentials}" type="text" name = 'credentials'><br>
-//             Title*<br> <input id='title-input' default = "${obj.title}" placeholder="${obj.title}" type="text" name = 'title' required ><br>
-//             Content*<br> <textarea rows='10' cols='100' id='content-input' type="text" name = 'content' placeholder= "${obj.content}" default = "${obj.content}"  require> </textarea><br>
-//             <input id='edit-submit-button' type="button" value="Submit">
-//          </form>
-//   `;
-//   $('.editContainer').empty();
-//   $('.editContainer').append(editTemplate);
-// }
-// function submitEdit(){
 
-// }
+function updateData(id){
+  let thisURL = `${URL}/${id}`;
+  fetch(thisURL, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      id: id,
+      subject: $('.subject-input').val(),
+      author: $('.author-input').val(),
+      credentials: $('.credentials-input').val(),
+      title: $('.title-input').val(),
+      content: $('.content-input').val()
+    })
+  })
+  .then( (res) => {
+    console.log(res, 'response');
+    return;
+  });
+}
   
 $(document).ready(function(){
-  // $('.editContainer').on('click', '#edit-submit-button', function(){
-
-  // });
-
-  // $('.containerJS').on('click', '.edit-button', function(){
-  //   let thisId = $(this).closest('li').attr('id');
-  //   return getItemById(thisId)
-  //     .then(data => {
-  //       console.log(data);
-  //       showEditData(thisId, data);
-  //       return;
-  //     });
-  // });
 
   getAll();
+
+  $('.containerJS').on('click', '.edit-button', function(){
+    $(this).closest('.main-container').addClass('hidden');
+    $(this).closest('li').find('.edit-form').removeClass('hidden');
+  });
+
+  $('.containerJS').on('click', '.edit-submit', function(){
+    let thisId = $(this).closest('li').attr('id');
+    return new Promise((resolve, reject) => {
+      return updateData(thisId)
+      .then(() =>{
+        getAll();
+        resolve();
+      })
+      .catch(err => {
+        return reject(err);
+      }); 
+    });
+  });
 
   
   $('#submit-button').on('click', function(){

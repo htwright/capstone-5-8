@@ -37,3 +37,11 @@ li {
 .hidden {
     display : none;
 }
+
+.title {
+    text-decoration: underline;
+}
+
+textarea {
+    resize: none;
+}
