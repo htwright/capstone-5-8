@@ -116,7 +116,10 @@ $(document).ready(function(){
   $('#submit-form').on('submit', function(event){
     event.preventDefault();
     return postItem()
-      .then(render)
+      .then(() => {
+        render();
+        this.reset();
+      })
       .catch(err => console.error(err));
   });
 
