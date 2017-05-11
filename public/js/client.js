@@ -100,30 +100,24 @@ $(document).ready(function(){
 
   $('#submit-button').on('click', function(event){
     event.preventDefault();
-    return new Promise((resolve, reject) => {
-      postItem()
+    // return new Promise((resolve, reject) => {
+    return postItem()
       .then(() =>{
         render();
-        resolve();
       })
-      .catch(err => {
-        return reject(err);
-      }); 
-    });
+      .catch(err => console.error(err));
+    // });
   });
 
   $('.containerJS').on('click', '.delete-submit', function(){
     let thisId = $(this).closest('li').attr('id');
-    return new Promise((resolve, reject) => {
-      deleteItemById(thisId)
+    return deleteItemById(thisId)
       .then(() =>{
         render();
-        resolve();
       })
       .catch(err => {
-        return reject(err);
+        console.error(err);
       }); 
-    });
   });
 
 
