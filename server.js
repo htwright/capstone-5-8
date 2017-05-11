@@ -6,8 +6,10 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
 const {DATABASE_URL, PORT} = require('./config');
-const{Item} = require('./models');
+const{Item, User} = require('./models');
 const cors = require('cors');
+const passport = require('passport');
+const {BasicStrategy} = require('passport-http');
 mongoose.Promise = global.Promise;
 //try to remove ^^^
 
@@ -15,24 +17,78 @@ app.use(express.static('js'));
 app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(cors());
+
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
 });
-// app.use(function(req,res,next){
 
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Request-Headers', '*');
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE, PUT, OPTIONS');
-//     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-//     res.header('Access-Control-Allow-Credentials', 'true');
-//   // res.header('Access-Control-Allow-Origin', req.get('origin'));
-// //   res.header('Access-Control-Allow-Origin','*');
-// //   res.header('Access-Control-Allow-Headers','Origin, X-Requested-With, Content-Type, Accept');
-// //   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-//   next();
-// });
+const strategy = new BasicStrategy(function(username, password, callback) {
+  let user;
+  User
+    .findOne({username: username})
+    .exec()
+    .then(_user => {
+      user = _user;
+      if (!user) {
+        return callback(null, false, {message: 'Incorrect username'});
+      }
+      return user.validatePassword(password);
+    })
+    .then(isValid => {
+      if (!isValid) {
+        return callback(null, false, {message: 'Incorrect password'});
+      }
+      else {
+        return callback(null, user);
+      }
+    });
+});
+
+passport.use(strategy);
+
+app.post('/users', (req, res) => {
+  const requiredFields = ['username', 'password'];
+
+  const missingIndex = requiredFields.findIndex(field => !req.body[field]);
+  if (missingIndex != -1) {
+    return res.status(400).json({
+      message: `Missing field: ${requiredFields[missingIndex]}`
+    });
+  }
+
+  let {username, password} = req.body;
+
+  username = username.trim();
+  password = password.trim();
+
+  // check for existing user
+  return User
+    .find({username})
+    .count()
+    .exec()
+    .then(count => {
+      if (count > 0) {
+        return res.status(422).json({message: 'username already taken'});
+      }
+      // if no existing user, hash password
+      return User.hashPassword(password);
+    })
+    .then(hash => {
+      return User
+        .create({
+          username,
+          password: hash,
+        });
+    })
+    .then(user => {
+      return res.status(201).json(user.apiRepr());
+    })
+    .catch(err => {
+      res.status(500).json({message: 'Internal server error'});
+    });
+});
 
 
 app.get('/', function(req, res) {
@@ -59,7 +115,7 @@ app.get('/items/:id', (req, res) => {
     .catch(err => res.status(500).send('Something went wrong!!!'));
 });
 
-app.post('/items', (req, res) =>{
+app.post('/items', passport.authenticate('basic', {session: false}), (req, res) =>{
   let requiredFields = ['subject', 'title', 'content'];
   let isValid = true;
   let missingField = [];
@@ -92,7 +148,7 @@ app.post('/items', (req, res) =>{
     });
 });
 
-app.put('/items/:id', (req,res) => {
+app.put('/items/:id', passport.authenticate('basic', {session: false}), (req,res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     res.status(400).json({
       error: 'Request path id and request body id values must match'
@@ -118,7 +174,7 @@ app.put('/items/:id', (req,res) => {
   });
 });
 
-app.delete('/items/:id', (req,res) => {
+app.delete('/items/:id', passport.authenticate('basic', {session: false}), (req,res) => {
   Item
     .findByIdAndRemove(req.params.id)
     .then(() => {

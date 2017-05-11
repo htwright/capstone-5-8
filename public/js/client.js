@@ -1,7 +1,5 @@
-// const {URL} = require('./../../config');
-
-let URL = 'https://safe-earth-98661.herokuapp.com/items';
-// let URL = 'http://localhost:8080/items';
+// let URL = 'https://safe-earth-98661.herokuapp.com/items';
+let URL = 'http://localhost:8080/items';
 
 function getAll(){
   let html = '';
@@ -27,16 +25,7 @@ function getAll(){
     });
 }
 
-// var form = new FormData(document.getElementById('login-form'));
-// fetch("/login", {
-//   method: "POST",
-//   body: form
-// });
 
-// let form = new FormData($('#submit-form'));
-// function clearHtml(){
-//   $('#containerJS').empty();
-// }
 function deleteData(id){
   return fetch(`${URL}/${id}`, {
     method: 'DELETE'
@@ -67,17 +56,21 @@ function addData(){
 $(document).ready(function(){
   getAll();
   $('#submit-button').on('click', function(event){
-    event.preventDefault();
+    // event.preventDefault();
     console.log('hello');
     addData();
     getAll();
   });
   $('.containerJS').on('click', '.delete-submit', function(event){
-    // event.preventDefault();
     console.log('hello');
-    let thisId = $(this).parent('li').attr('id');
+    let thisId = $(this).closest('li').attr('id');
     console.log(thisId);
     deleteData(thisId);
     getAll();
   });
 });
+
+
+//passport bearer strat
+//oAth
+//post /login endpoint
