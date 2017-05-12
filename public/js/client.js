@@ -1,18 +1,38 @@
 let URL = 'https://safe-earth-98661.herokuapp.com/items';
 // let URL = 'http://localhost:8080/items';
 
-
-function render(){
+function renderSelector(opt, term = ''){
+  if (opt === 'full'){
+    return getAll()
+    .then(res =>{
+      render(res);
+      return;
+    })
+    .then(hideReadAlls())
+    .catch(err => console.error(err));
+  } else if (opt === 'search'){
+    return new Promise((resolve, reject)=>{
+      return getBySearchTerm(term)
+    .then(res => {
+      render(res);
+      return;
+    })
+    .then(hideReadAlls())
+    .catch(err => console.error(err)); 
+    });
+  }
+}
+function render(arr){
   let html = '';
-  return fetch(URL)
-  .then(res => res.json())
-  .then(res => {
-    res.forEach(function(item){
-      let shortContent = item.content;
-      if (item.content.length > 250){
-        shortContent = item.content.substr(0, 250)+'<span>...</span>';
-      }
-      html += 
+  let shortContent;
+  // let toRender = [];
+  console.log(arr);
+  arr.forEach(function(item){
+    shortContent = '';
+    if(item.content.length > 250){
+      shortContent = item.content.substring(0, 250)+'...';
+    }
+    html += 
 `<li class = 'item' id = '${item.id}'>
 <div class = 'main-container'>
   <div class='header-container'>
@@ -51,19 +71,14 @@ function render(){
 
 </form>
 </li>`;
-    });
-    return res;
-  })
-    .then((res)=>{
-      $('.containerJS').html(html); 
-      $('.containerJS').find('li').each(function(){
-        if ($(this).find('.full-content').text().length < 250){
-          $(this).find('.read-more').remove();
-        }
-      });
-      return res;
-    })
-    .catch(err => console.error(err));
+    $('.containerJS').html(html);
+  });
+}
+
+function getAll(){
+  return fetch(URL)
+  .then(res => res.json())
+  .catch(err => console.error(err));
 }
 
 function deleteItemById(id){
@@ -71,7 +86,13 @@ function deleteItemById(id){
     method: 'DELETE',
   });
 }
-
+function hideReadAlls(){
+  $('.containerJS').find('li').each(function(){
+    if ($(this).find('.full-content').text().length < 250){
+      $(this).find('.read-more').remove();
+    }
+  });
+}
 
 function postItem(){
   return fetch(URL, {
@@ -108,16 +129,53 @@ function updateItemById(id, thisBody){
   })
   .catch(err => console.error(err));
 }
+function getBySearchTerm(term){
+  let resultArr = [];
+  let splitArr = [];
+  return fetch(URL)
+  .then(res => res.json())
+  .then(res => {
+    console.log(res);
+    res.forEach(function(item){
+      splitArr = item.content.split(' ');
+      //split arr = array of words from item content
+      //item = object from result array
+      //item1 = word from item content array
+      //
+      splitArr.forEach(function(item1) {
+        if(term.includes(item1)){
+          return resultArr.push(item);
+        }
+      });
+    });
+    //   if(splitArr.includes(term))
+    //     resultArr.push(item);
+    // });
+    console.log(resultArr);
+    return resultArr;
+  })
+  .catch(err => console.error(err));
+}
 
 $(document).ready(function(){
   
-  render();
+  renderSelector('full');
+
+  $('#search-form').on('submit', function(event){
+    event.preventDefault();
+    let termsArr = [];
+    let rawTerms = ($(this).children('#search-box').val());
+    termsArr = rawTerms.split(' ');
+    console.log(termsArr);
+    renderSelector('search', termsArr);
+    this.reset();
+  });
 
   $('#submit-form').on('submit', function(event){
     event.preventDefault();
     return postItem()
       .then(() => {
-        render();
+        renderSelector('full');
         this.reset();
       })
       .catch(err => console.error(err));
@@ -161,7 +219,7 @@ $(document).ready(function(){
 
     // updateItemById(thisId, updateBody)
     //   .then(() =>{
-    //     render();
+    //     renderSelector('full');
     //   })
     //   .catch(err =>{
     //     console.error(err);
