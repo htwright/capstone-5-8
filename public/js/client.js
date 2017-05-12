@@ -16,8 +16,10 @@ function deleteItemById(id){
 }
 function hideReadAlls(){
   $('.containerJS').find('li').each(function(){
+    // console.log($(this).find('.full-content').text());
     if ($(this).find('.full-content').text().length < 250){
-      $(this).find('.read-more').remove();
+      console.log($(this).find('.controls-container').find('.read-more'));
+      $(this).find('.controls-container').find('.read-more').remove();
     }
   });
 }
@@ -65,6 +67,7 @@ function getBySubject(subject){
   .then(res => {
     console.log(res);
     console.log(subject);
+    subject = subject.toString();
     subject = subject.toLowerCase();
     res.forEach(function(item){
       item.subject = item.subject.toLowerCase();
@@ -96,6 +99,7 @@ function getBySearchTerm(term){
     res.forEach(function(item){
       splitArr = item.content.split(' ');
       splitArr.forEach(function(item1) {
+        item1 = item1.toLowerCase();
         if(term.includes(item1)){
           return resultArr.push(item);
         }
@@ -114,33 +118,45 @@ function getBySearchTerm(term){
   .catch(err => console.error(err));
 }
 
-function renderSelector(opt, term = []){
+function renderSelector(opt, terms = []){
+  for (let i = 0; i < terms.length; i++){
+    terms[i] = terms[i].toLowerCase();
+  }
   if (opt === 'full'){
     return getAll()
     .then(res =>{
       render(res);
       return;
     })
-    .then(hideReadAlls())
+    .then(() =>{
+      hideReadAlls();
+      return;
+    })
     .catch(err => console.error(err));
   } else if (opt === 'search'){
     return new Promise((resolve, reject)=>{
-      return getBySearchTerm(term)
+      return getBySearchTerm(terms)
     .then(res => {
       render(res);
       return;
     })
-    .then(hideReadAlls())
+    .then(() =>{
+      hideReadAlls();
+      return;
+    })
     .catch(err => console.error(err)); 
     });
   } else if (opt === 'subject'){
     return new Promise((resolve, reject)=>{
-      return getBySubject(term)
+      return getBySubject(terms)
     .then(res => {
       render(res);
       return;
     })
-    .then(hideReadAlls())
+    .then(() =>{
+      hideReadAlls();
+      return;
+    })
     .catch(err => console.error(err)); 
     });
 
