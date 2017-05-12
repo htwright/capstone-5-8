@@ -74,7 +74,14 @@ function getBySearchTerm(term){
       });
     });
     console.log(resultArr);
-    return resultArr;
+    if (resultArr.length > 0){
+      console.log('searching...');
+      return resultArr;
+    } else {
+      console.log('no matched items in database!');
+      return resultArr;
+    }
+    
   })
   .catch(err => console.error(err));
 }
