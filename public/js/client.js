@@ -78,20 +78,21 @@ function getBySubject(subject){
 }
 //accepts an array of terms and returns an array of processed database 
 //objects that have one of the search term strings in their content 
-function getBySearchTerm(term){
+
+// Search for a subject
+function getBySearchTerm(subject){
   let resultArr = [];
-  let splitArr = [];
+  // let splitArr = [];
   return fetch(URL)
   .then(res => res.json())
   .then(res => {
+    subject = subject.toString();
+    subject = subject.toLowerCase();
     res.forEach(function(item){
-      splitArr = item.content.split(' ');
-      splitArr.forEach(function(item1) {
-        item1 = item1.toLowerCase();
-        if(term.includes(item1)){
-          return resultArr.push(item);
-        }
-      });
+      item.subject = item.subject.toLowerCase();
+      if(item.subject === subject){
+        resultArr.push(item);
+      }
     });
     if (resultArr.length > 0){
       return resultArr;
