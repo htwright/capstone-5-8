@@ -58,6 +58,34 @@ function updateItemById(id, thisBody){
   .catch(err => console.error(err));
 }
 
+function getBySubject(subject){
+  let resultArr = [];
+  return fetch(URL)
+  .then(res => res.json())
+  .then(res => {
+    console.log(res);
+    console.log(subject);
+    subject = subject.toLowerCase();
+    res.forEach(function(item){
+      item.subject = item.subject.toLowerCase();
+      if(item.subject === subject){
+        resultArr.push(item);
+      }
+    });
+    console.log(resultArr);
+    if (resultArr.length > 0){
+      console.log('searching...');
+      return resultArr;
+    } else {
+      console.log('no matched items in database!');
+      return resultArr;
+    }
+    
+  })
+  .catch(err => console.error(err));
+
+}
+
 function getBySearchTerm(term){
   let resultArr = [];
   let splitArr = [];
@@ -105,6 +133,17 @@ function renderSelector(opt, term = []){
     .then(hideReadAlls())
     .catch(err => console.error(err)); 
     });
+  } else if (opt === 'subject'){
+    return new Promise((resolve, reject)=>{
+      return getBySubject(term)
+    .then(res => {
+      render(res);
+      return;
+    })
+    .then(hideReadAlls())
+    .catch(err => console.error(err)); 
+    });
+
   }
 }
 
@@ -183,6 +222,15 @@ $(document).ready(function(){
       })
       .catch(err => console.error(err));
   });
+
+  $('#show-gaming-button').on('click', function(){
+    renderSelector('subject', 'gaming');
+  });
+
+  $('#show-test-button').on('click', function(){
+    renderSelector('subject', 'test');
+  });
+
 
   $('.containerJS').on('click', '.delete-submit', function(){
     let thisId = $(this).closest('li').attr('id');
