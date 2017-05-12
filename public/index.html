@@ -3,21 +3,22 @@
     <head>
         <meta charset="utf-8">
         <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
-        <title>Haven't though about it tbh</title>
+        <title>Knowledge</title>
         <meta name="description" content="posts">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="main.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
     </head>
     <body>
-
-        <h1>Share Your Knowledge</h1>
-        <form id='search-form'>
-            Search:<input id='search-box' type='text' name='search' required>
-            <input id='search-button' type='submit' value='Submit'>
-        </form>
-        <button type='button' id='show-all-button'> Show All </button>
-
-        <form id='submit-form'>
+        <div class='top-container'>
+            <h1 class='app-title'>Knowledge Bomb</h1>
+            <h3 class='app-slogan'>Learn and share your knowledge with the world!</h3>
+            <button id='create-button'>Drop a Knowledge Bomb</button>
+        </div>
+        
+        <div id="myModal" class="modal">
+          <form class='modal-content' id='submit-form'>
+              <span class="close">&times;</span>
             Subject*<br> <input id='subject-input' type="text" name = 'subject' required><br>
             Author*<br> <input id='author-input' type="text" name = 'author' required ><br>
             Credentials<br> <input id='credentials-input' type="text" name = 'credentials'><br>
@@ -25,13 +26,13 @@
             Content*<br> <textarea rows='10' cols='100' id='content-input' type="text" name = 'content' required> </textarea><br>
             <input id='submit-button' type="submit" value="Submit">
          </form>
+        </div>
+       
 
-        
+        <div class= "containerJS">
+            <ul>
 
-         <div class= "containerJS">
-             <ul>
-                
-             </ul>
+            </ul>
          </div>
 
 

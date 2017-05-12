@@ -242,4 +242,12 @@ $(document).ready(function(){
     $(this).closest('li').find('.truncated-content').toggleClass('hidden');
     $(this).closest('li').find('.read-more').toggleClass('hidden');
   });
+
+  $('#create-button').on('click', function(){
+    $('#myModal').css('display', 'block');
+  });
+
+  $('.close').on('click', function(){
+    $('#myModal').css('display', 'none');
+  });
 });

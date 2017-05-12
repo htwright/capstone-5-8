@@ -7,12 +7,9 @@
 .containerJS {
     display:inline-flex;
     flex-wrap:wrap;
-    justify-content:space-around;
+    justify-content:space-between;
     padding-top: 25px;
-
 }
-
-
 
 li {
     display: flex;
@@ -43,11 +40,10 @@ li {
 }
 
 .content-container {
-    background-color:#11c691;
+    background:#11c691;
     padding: 15px;
     color:white;
-
- }
+}
  .author {
      font-weight:bold;
      margin:0;
@@ -57,16 +53,15 @@ li {
      margin-top:5px;
  }
  .short-content,.full-content {
-     line-height:1.75em;
+    line-height:1.75em;
  }
 .main-container {
-
     width: 100%;
-     border-radius: 10px;
+    border-radius: 10px;
 }
 
 .controls-container {
-    background-color:#11c691;
+    background:#11c691;
     width:100%;
     display:flex;
     padding:15px;
@@ -74,14 +69,19 @@ li {
     border-bottom-right-radius: 10px;
 }
 
-.edit-button, .read-more {
-    background:#2b54a1;
-    border:0;
-    border-radius:10px;
-    padding:15px 30px;
+.edit-form {
+    background:#11c691;
+    padding: 15px;
     color:white;
-    margin-left:15px;
+    border-radius: 10px;
+}
 
+label {
+    font-weight:bold;
+}
+
+.edit-content {
+    width:100%;
 }
 
 .delete-submit {
@@ -94,4 +94,125 @@ li {
 
 textarea {
     resize: none;
+    
+}
+
+#submit-form {
+    width:50%;
+    background:#11c691;
+    padding: 15px;
+    color:white;
+    border-radius: 10px;
+    padding:30px;
+}
+
+#submit-form *, .edit-form * {
+    margin-bottom:15px;
+    min-width:50%;
+}
+
+
+.edit-button, .read-more, .edit-submit, .delete-submit {
+    background:#2b54a1;
+    border:0;
+    border-radius:10px;
+    padding:15px 30px;
+    color:white;
+    margin-right:15px;
+    min-width: 30%;
+}
+
+#submit-form .close {
+    color: white;
+    min-width:30px;
+}
+
+input, textarea{
+    margin-top: 10px;
+    line-height: 1.75em;
+    padding:10px;
+    border-radius: 5px;
+}
+
+
+#submit-button {
+    background:#2b54a1;
+    border:0;
+    border-radius:10px;
+    color:white;
+    min-width:30%;
+}
+
+.top-container {
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.app-title {
+    font-size: 36px;
+    display: flex;
+    justify-content:center;
+    margin-bottom: 0;
+}
+
+.app-slogan {
+    font-size: 21px;
+    display: flex;
+    justify-content:center;
+    margin-bottom: 30px;
+}
+
+.modal {
+   display: none;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background: rgb(0,0,0); /* Fallback color */
+    background: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+
+.modal-content {
+    background: #fefefe;
+    margin: 2.5% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#create-button {
+    display:flex;
+    justify-content:center;
+    width: 25%;
+    background:#2b54a1;
+    border:0;
+    border-radius:10px;
+    padding:15px 30px;
+    color:white;
+    margin-left:15px;
+}
+
+button:hover {
+    cursor:pointer;
+    background:#346dd7;
+    transition:background 0.3s ease;
 }
