@@ -24,3 +24,6 @@ Edit: https://gyazo.com/a6a4fa675bc8c56852c9f59a66e11a81
 
 ### Summary
 Knowledge Bomb is a place where users can go to learn about anything, as well as share their expertise in something their passionate about. The idea behind Knowledge Bomb is to give people an easy place to share their knowledge of what they love, and give everyone the ability to learn whatever they want from others who have a unique perspective on a particular subject. From my experience it’s always much more fun to learn when you are able to read something from a writer who is clearly passionate and knowledgeable about what they are writing. With the click of a button, you can learn about Math, Science, or maybe even Cooking, from people who are willing to share their knowledge with the world. 
+
+### Technology Used
+HTML, CSS, Javascript, Jquery, Mongo, Mongoose
