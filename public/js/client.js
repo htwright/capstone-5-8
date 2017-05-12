@@ -59,8 +59,6 @@ function getBySubject(subject){
   return fetch(URL)
   .then(res => res.json())
   .then(res => {
-    console.log(res);
-    console.log(subject);
     subject = subject.toString();
     subject = subject.toLowerCase();
     res.forEach(function(item){
@@ -69,19 +67,14 @@ function getBySubject(subject){
         resultArr.push(item);
       }
     });
-    console.log(resultArr);
     if (resultArr.length > 0){
-      console.log('searching...');
-     
       return resultArr;
     } else {
       alert('Search returned no matches!');
       return;
     }
-    
   })
   .catch(err => console.error(err));
-
 }
 //accepts an array of terms and returns an array of processed database 
 //objects that have one of the search term strings in their content 
@@ -91,7 +84,6 @@ function getBySearchTerm(term){
   return fetch(URL)
   .then(res => res.json())
   .then(res => {
-    console.log(res);
     res.forEach(function(item){
       splitArr = item.content.split(' ');
       splitArr.forEach(function(item1) {
@@ -101,15 +93,12 @@ function getBySearchTerm(term){
         }
       });
     });
-    console.log(resultArr);
     if (resultArr.length > 0){
-      console.log('searching...');
       return resultArr;
     } else {
       alert('no matched items in database!');
       return;
     }
-    
   })
   .catch(err => console.error(err));
 }
@@ -164,7 +153,6 @@ function render(arr){
   let html = '';
   let shortContent;
   // let toRender = [];
-  console.log(arr);
   arr.forEach(function(item){
     shortContent = item.content;
     if(item.content.length > 250){
@@ -216,7 +204,6 @@ function render(arr){
 function hideReadAlls(){
   $('.containerJS').find('li').each(function(){
     if ($(this).find('.full-content').text().length < 250){
-      console.log($(this).find('.controls-container').find('.read-more'));
       $(this).find('.controls-container').find('.read-more').remove();
     }
   });
@@ -232,7 +219,6 @@ $(document).ready(function(){
     let termsArr = [];
     let rawTerms = ($(this).children('#search-box').val());
     termsArr = rawTerms.split(' ');
-    console.log(termsArr);
     renderSelector('search', termsArr);
     this.reset();
   });

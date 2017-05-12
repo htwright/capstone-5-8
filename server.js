@@ -166,7 +166,6 @@ app.put('/items/:id', (req,res) => {
   Item
   .findByIdAndUpdate(req.params.id, {$set: updatedItem}, {new: true})
   .then((result) => {
-    // console.log(result);
     res.status(201).json(result.apiRepr());
   })
   .catch(err => {
