@@ -74,8 +74,8 @@ function getBySubject(subject){
       console.log('searching...');
       return resultArr;
     } else {
-      console.log('no matched items in database!');
-      return resultArr;
+      alert('Search returned no matches!');
+      return;
     }
     
   })
@@ -105,8 +105,8 @@ function getBySearchTerm(term){
       console.log('searching...');
       return resultArr;
     } else {
-      throw new Error('no matched items in database!');
-      // return resultArr;
+      alert('no matched items in database!');
+      return;
     }
     
   })
@@ -235,13 +235,19 @@ $(document).ready(function(){
     renderSelector('search', termsArr);
     this.reset();
   });
-
+//Subject search buttons
   $('#show-gaming-button').on('click', function(){
     renderSelector('subject', 'gaming');
   });
 
-  $('#show-test-button').on('click', function(){
-    renderSelector('subject', 'test');
+  $('#show-technology-button').on('click', function(){
+    renderSelector('subject', 'technology');
+  });
+  $('#show-history-button').on('click', function(){
+    renderSelector('subject', 'history');
+  });
+  $('#show-television-button').on('click', function(){
+    renderSelector('subject', 'television');
   });
 //Show all button
   $('#show-all-button').on('click', function(){
@@ -300,6 +306,7 @@ $(document).ready(function(){
 
   $('#submit-form').on('submit', function(event){
     event.preventDefault();
+    $('#myModal').css('display', 'none');
     return postItem()
       .then(() => {
         renderSelector('full');

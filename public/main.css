@@ -9,6 +9,7 @@
     flex-wrap:wrap;
     justify-content:space-between;
     padding-top: 25px;
+    width:100%;
 }
 
 li {
@@ -74,6 +75,7 @@ li {
     padding: 15px;
     color:white;
     border-radius: 10px;
+
 }
 
 label {
@@ -112,7 +114,7 @@ textarea {
 }
 
 
-.edit-button, .read-more, .edit-submit, .delete-submit {
+.edit-button, .read-more, .edit-submit, .delete-submit, .edit-cancel {
     background:#2b54a1;
     border:0;
     border-radius:10px;
@@ -121,6 +123,9 @@ textarea {
     margin-right:15px;
     min-width: 30%;
 }
+
+
+
 
 #submit-form .close {
     color: white;
@@ -197,6 +202,28 @@ input, textarea{
     color: black;
     text-decoration: none;
     cursor: pointer;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+     
+}
+
+.search-container {
+    background:#11c691;
+    padding: 15px;
+    color:white;
+    margin-top:15px;
+    border-radius: 5px;
+}
+
+.button-headers {
+    
+    background:#2b54a1;
+    border:0;
+    border-radius:10px;
+    padding:15px 30px;
+    color:white;
+    margin-right:10px;
+    width: 10%
 }
 
 #create-button {
@@ -215,4 +242,27 @@ button:hover {
     cursor:pointer;
     background:#346dd7;
     transition:background 0.3s ease;
+}
+
+#search-button {
+    background:#2b54a1;
+    border:0;
+    border-radius:10px;
+    padding:15px 30px;
+    color:white;
+    margin-right:0px;
+    
+}
+
+#search-form {
+    width: 50%;
+}
+
+#search-box {
+    width: 60%;
+}
+
+#search-button {
+    padding-left: 70px;
+    padding-right: 70px;
 }
