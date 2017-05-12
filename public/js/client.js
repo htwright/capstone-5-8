@@ -79,7 +79,7 @@ function getBySearchTerm(term){
   .catch(err => console.error(err));
 }
 
-function renderSelector(opt, term = ''){
+function renderSelector(opt, term = []){
   if (opt === 'full'){
     return getAll()
     .then(res =>{
@@ -107,7 +107,7 @@ function render(arr){
   // let toRender = [];
   console.log(arr);
   arr.forEach(function(item){
-    shortContent = '';
+    shortContent = item.content;
     if(item.content.length > 250){
       shortContent = item.content.substring(0, 250)+'...';
     }
@@ -180,7 +180,9 @@ $(document).ready(function(){
   $('.containerJS').on('click', '.delete-submit', function(){
     let thisId = $(this).closest('li').attr('id');
     return deleteItemById(thisId)
-      .then(render)
+      .then(() => {
+        renderSelector('full');
+      })
       .catch(err => {
         console.error(err);
       }); 
@@ -211,12 +213,13 @@ $(document).ready(function(){
       title: $(this).find('.edit-title').val(),
       content: $(this).find('.edit-content').val()
     };
-    updateItemById(thisId, updateBody)
-      .then(render)
-      .catch(err =>{
-        console.error(err);
-      }); 
-
+    return updateItemById(thisId, updateBody)
+        .then(res => {
+          console.log(res);
+          renderSelector('full');
+          this.reset();
+        })
+      .catch(err => console.error(err));
     // updateItemById(thisId, updateBody)
     //   .then(() =>{
     //     renderSelector('full');
