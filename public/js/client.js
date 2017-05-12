@@ -72,6 +72,7 @@ function getBySubject(subject){
     console.log(resultArr);
     if (resultArr.length > 0){
       console.log('searching...');
+     
       return resultArr;
     } else {
       alert('Search returned no matches!');

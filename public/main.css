@@ -238,7 +238,7 @@ input, textarea{
     margin-left:15px;
 }
 
-button:hover {
+button:hover, #search-button:hover, #create-button:hover, #submit-button:hover  {
     cursor:pointer;
     background:#346dd7;
     transition:background 0.3s ease;
