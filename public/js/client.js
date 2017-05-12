@@ -164,7 +164,7 @@ function render(arr){
 <div class = 'main-container'>
   <div class='header-container'>
     <p class = 'title'>${item.title}</p>
-    <h3 class = 'subject'>${item.subject}</h3>
+    <h3 class = 'subject'>${item.subject.toUpperCase()}</h3>
   </div>
   <div class='content-container'>
     <p class = 'author'>Author: ${item.author}</p>
