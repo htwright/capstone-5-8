@@ -2,7 +2,7 @@ let URL = 'https://safe-earth-98661.herokuapp.com/items';
 // let URL = 'http://localhost:8080/items';
 
 
-
+//!!!!!!!getBySubject, getBySearchTerm, and render are ONLY to EVER be called //       by the renderSelector!!!!!!
 function getAll(){
   return fetch(URL)
   .then(res => res.json())
@@ -14,15 +14,7 @@ function deleteItemById(id){
     method: 'DELETE',
   });
 }
-function hideReadAlls(){
-  $('.containerJS').find('li').each(function(){
-    // console.log($(this).find('.full-content').text());
-    if ($(this).find('.full-content').text().length < 250){
-      console.log($(this).find('.controls-container').find('.read-more'));
-      $(this).find('.controls-container').find('.read-more').remove();
-    }
-  });
-}
+
 
 function postItem(){
   return fetch(URL, {
@@ -59,7 +51,9 @@ function updateItemById(id, thisBody){
   })
   .catch(err => console.error(err));
 }
-
+//accepts an array of terms (for compatability with the renderSelector).
+//the array should only contain one string per our event listeners and //renderSelector. Returns an array of processed database objects who have
+//subject fields that match the term passed in exactly
 function getBySubject(subject){
   let resultArr = [];
   return fetch(URL)
@@ -88,7 +82,8 @@ function getBySubject(subject){
   .catch(err => console.error(err));
 
 }
-
+//accepts an array of terms and returns an array of processed database 
+//objects that have one of the search term strings in their content 
 function getBySearchTerm(term){
   let resultArr = [];
   let splitArr = [];
@@ -110,14 +105,15 @@ function getBySearchTerm(term){
       console.log('searching...');
       return resultArr;
     } else {
-      console.log('no matched items in database!');
-      return resultArr;
+      throw new Error('no matched items in database!');
+      // return resultArr;
     }
     
   })
   .catch(err => console.error(err));
 }
-
+//render selector is a versatile function that can be called independantly
+//or at the head of a promise chain. NEVER render except via this function 
 function renderSelector(opt, terms = []){
   for (let i = 0; i < terms.length; i++){
     terms[i] = terms[i].toLowerCase();
@@ -162,7 +158,7 @@ function renderSelector(opt, terms = []){
 
   }
 }
-
+//render accepts an array of database objects that've been extracted via .json //and/or filtered by our get functions
 function render(arr){
   let html = '';
   let shortContent;
@@ -215,10 +211,21 @@ function render(arr){
     $('.containerJS').html(html);
   });
 }
+
+function hideReadAlls(){
+  $('.containerJS').find('li').each(function(){
+    if ($(this).find('.full-content').text().length < 250){
+      console.log($(this).find('.controls-container').find('.read-more'));
+      $(this).find('.controls-container').find('.read-more').remove();
+    }
+  });
+}
+
 $(document).ready(function(){
-  
+//initial render  
   renderSelector('full');
 
+//Search listeners
   $('#search-form').on('submit', function(event){
     event.preventDefault();
     let termsArr = [];
@@ -229,16 +236,6 @@ $(document).ready(function(){
     this.reset();
   });
 
-  $('#submit-form').on('submit', function(event){
-    event.preventDefault();
-    return postItem()
-      .then(() => {
-        renderSelector('full');
-        this.reset();
-      })
-      .catch(err => console.error(err));
-  });
-
   $('#show-gaming-button').on('click', function(){
     renderSelector('subject', 'gaming');
   });
@@ -246,8 +243,12 @@ $(document).ready(function(){
   $('#show-test-button').on('click', function(){
     renderSelector('subject', 'test');
   });
+//Show all button
+  $('#show-all-button').on('click', function(){
+    renderSelector('full');
+  });
 
-
+//Edit listeners
   $('.containerJS').on('click', '.delete-submit', function(){
     let thisId = $(this).closest('li').attr('id');
     return deleteItemById(thisId)
@@ -257,10 +258,6 @@ $(document).ready(function(){
       .catch(err => {
         console.error(err);
       }); 
-  });
-
-  $('#show-all-button').on('click', function(){
-    renderSelector('full');
   });
 
   $('.containerJS').on('click', '.edit-button', function(){
@@ -291,13 +288,6 @@ $(document).ready(function(){
           this.reset();
         })
       .catch(err => console.error(err));
-    // updateItemById(thisId, updateBody)
-    //   .then(() =>{
-    //     renderSelector('full');
-    //   })
-    //   .catch(err =>{
-    //     console.error(err);
-    //   }); 
   });
 
   $('.containerJS').on('click', '.read-more', function(event){
@@ -306,9 +296,22 @@ $(document).ready(function(){
     $(this).closest('li').find('.truncated-content').toggleClass('hidden');
     $(this).closest('li').find('.read-more').toggleClass('hidden');
   });
+//Create listeners
+
+  $('#submit-form').on('submit', function(event){
+    event.preventDefault();
+    return postItem()
+      .then(() => {
+        renderSelector('full');
+        this.reset();
+      })
+      .catch(err => console.error(err));
+  });
 
   $('#create-button').on('click', function(){
     $('#myModal').css('display', 'block');
+    this.reset();
+
   });
 
   $('.close').on('click', function(){
