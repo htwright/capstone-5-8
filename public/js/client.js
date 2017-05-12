@@ -15,7 +15,7 @@ function deleteItemById(id){
   });
 }
 
-
+//allows users to post an item to the database
 function postItem(){
   return fetch(URL, {
     method: 'POST',
@@ -35,7 +35,7 @@ function postItem(){
   })
   .catch(err => console.error(err));
 }
-
+//allows users to update an already existing item
 function updateItemById(id, thisBody){
   let thisURL = `${URL}/${id}`;
   return fetch(thisURL, {
@@ -212,7 +212,7 @@ function render(arr){
     $('.containerJS').html(html);
   });
 }
-
+//hides the read more button if content is small enough
 function hideReadAlls(){
   $('.containerJS').find('li').each(function(){
     if ($(this).find('.full-content').text().length < 250){
@@ -244,9 +244,11 @@ $(document).ready(function(){
   $('#show-technology-button').on('click', function(){
     renderSelector('subject', 'technology');
   });
+
   $('#show-history-button').on('click', function(){
     renderSelector('subject', 'history');
   });
+
   $('#show-television-button').on('click', function(){
     renderSelector('subject', 'television');
   });
@@ -266,17 +268,17 @@ $(document).ready(function(){
         console.error(err);
       }); 
   });
-
+//shows the edit item form
   $('.containerJS').on('click', '.edit-button', function(){
     $(this).closest('li').find('.main-container').addClass('hidden');
     $(this).closest('li').find('.edit-form').removeClass('hidden');
   });
-
+//hides the edit item form
   $('.containerJS').on('click', '.edit-cancel', function(){
     $(this).closest('li').find('.main-container').removeClass('hidden');
     $(this).closest('li').find('.edit-form').addClass('hidden');
   });
-
+//submits the updated item
   $('.containerJS').on('submit', '.edit-form', function(event){
     event.preventDefault();
     let thisId = $(this).closest('li').attr('id');
@@ -296,15 +298,15 @@ $(document).ready(function(){
         })
       .catch(err => console.error(err));
   });
-
+//Shows the full content of the item
   $('.containerJS').on('click', '.read-more', function(event){
     event.preventDefault();
     $(this).closest('li').find('.full-content').toggleClass('hidden');
     $(this).closest('li').find('.truncated-content').toggleClass('hidden');
     $(this).closest('li').find('.read-more').toggleClass('hidden');
   });
-//Create listeners
 
+//submits the provided information to the database
   $('#submit-form').on('submit', function(event){
     event.preventDefault();
     $('#myModal').css('display', 'none');
@@ -315,13 +317,13 @@ $(document).ready(function(){
       })
       .catch(err => console.error(err));
   });
-
+//shows the hidden modal for submitting and item
   $('#create-button').on('click', function(){
     $('#myModal').css('display', 'block');
     this.reset();
 
   });
-
+//hides the modal
   $('.close').on('click', function(){
     $('#myModal').css('display', 'none');
   });
