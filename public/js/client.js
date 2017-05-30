@@ -76,33 +76,8 @@ function getBySubject(subject){
   })
   .catch(err => console.error(err));
 }
-//accepts an array of terms and returns an array of processed database 
-//objects that have one of the search term strings in their content 
 
-// Search for a subject
-function getBySearchTerm(subject){
-  let resultArr = [];
-  // let splitArr = [];
-  return fetch(URL)
-  .then(res => res.json())
-  .then(res => {
-    subject = subject.toString();
-    subject = subject.toLowerCase();
-    res.forEach(function(item){
-      item.subject = item.subject.toLowerCase();
-      if(item.subject === subject){
-        resultArr.push(item);
-      }
-    });
-    if (resultArr.length > 0){
-      return resultArr;
-    } else {
-      alert('no matched items in database!');
-      return;
-    }
-  })
-  .catch(err => console.error(err));
-}
+
 //render selector is a versatile function that can be called independantly
 //or at the head of a promise chain. NEVER render except via this function 
 function renderSelector(opt, terms = []){
@@ -122,7 +97,7 @@ function renderSelector(opt, terms = []){
     .catch(err => console.error(err));
   } else if (opt === 'search'){
     return new Promise((resolve, reject)=>{
-      return getBySearchTerm(terms)
+      return getBySubject(terms)
     .then(res => {
       render(res);
       return;
